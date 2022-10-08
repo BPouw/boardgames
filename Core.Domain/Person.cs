@@ -13,10 +13,8 @@ namespace Core.Domain
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateOnly DateOfBirth { get; set; }
-        public enum Genders { M, V, X };
-        public Genders Gender { get; set; }
+        public Gender Gender { get; set; }
         public Address Address { get; set; }
-
         public int NoShows { get; set; }
         public int Shows { get; set; }
     }
