@@ -11,9 +11,12 @@ namespace Core.Domain
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime DateTime { get; set; }
+        public int AddressId { get; set; }
         public Address Address { get; set; }
-        public Person[] Players { get; set; }
+        public int OrganiserId { get; set; }
+        public Person Organiser { get; set; }
         public int MaxPlayers { get; set; }
-        public Game[] Games { get; set; }
+        public ICollection<Person> Players { get; set; }
+        public ICollection<Game> Games { get; set; }
     }
 }

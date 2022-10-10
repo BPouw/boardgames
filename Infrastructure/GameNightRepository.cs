@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    internal class GameNightRepository : IGameNightRepository
+    public class GameNightRepository : IGameNightRepository
     {
-        public Task AddGameNight(GameNight gameNight)
+        public Task AddGameNight(GameNight GameNight)
         {
             throw new NotImplementedException();
         }
