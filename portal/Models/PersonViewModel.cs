@@ -1,6 +1,5 @@
 ﻿using System;
 using Core.Domain;
-using portal.Areas.Identity.Data;
 
 namespace portal.Models
 {
@@ -17,8 +16,6 @@ namespace portal.Models
 
         public int NoShows { get; set; }
         public int Shows { get; set; }
-
-        public User user { get; set; }
 
         public ICollection<GameNight> GameNights { get; set; }
 
