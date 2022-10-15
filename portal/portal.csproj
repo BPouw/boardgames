@@ -18,6 +18,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,8 @@
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Views\GameNight\" />
     <None Remove="Views\Account\" />
+    <None Remove="Microsoft.AspNetCore.Session" />
+    <None Remove="Microsoft.AspNetCore.Http.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\GameNight\" />

@@ -1,4 +1,7 @@
 ﻿using System;
+using Core.Domain;
+using Core.DomainServices;
+using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +13,14 @@ namespace portal.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private IPersonRepository _personRepository;
 
         public AccountController(UserManager<IdentityUser> userMgr,
-            SignInManager<IdentityUser> signInMgr)
+            SignInManager<IdentityUser> signInMgr, IPersonRepository personRepository)
         {
             userManager = userMgr;
             signInManager = signInMgr;
-
+            this._personRepository = personRepository;
             IdentitySeedData.EnsurePopulated(userMgr).Wait();
         }
 
@@ -37,15 +41,19 @@ namespace portal.Controllers
      
                 var user =
                     await userManager.FindByNameAsync(loginModel.Name);
-                if (user != null)
+
+            if (user != null)
                 {
-                    await signInManager.SignOutAsync();
+                Person person = _personRepository.GetPersonFromEmail(loginModel.Name).First();
+                HttpContext.Session.SetObject("PersonObject", person);
+                await signInManager.SignOutAsync();
                     if ((await signInManager.PasswordSignInAsync(user,
                         loginModel.Password, false, false)).Succeeded)
                     {
-                        return Redirect(loginModel?.ReturnUrl ?? "/");
+                        return Redirect(loginModel?.ReturnUrl ?? "/GameNight/Index");
                     }
                 }
+
             
 
             ModelState.AddModelError("", "Invalid name or password");
