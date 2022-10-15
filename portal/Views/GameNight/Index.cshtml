@@ -1,0 +1,131 @@
+﻿
+<head>
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
+    <link href="/css/dashboard.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <!--HIER IF AFSLUITEN! -->
+            <div class="col-6 col-lg-3">
+                <div class="button-card card radius-10 border-start border-0 border-5 border-success">
+                    <a asp-controller="Gamenight" asp-action="JoinedGameNights">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Click to see</p>
+                                    <h4 class="my-1 text-success">My joined<br> GameNights</h4>
+                                </div>
+                                <div class="button-card-icon rounded-circle bg-gradient-green text-white ms-auto">
+                                    <i class="fa-solid fa-users-medical"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+                <div class="table-card card">
+                    <div class="card-header">
+                        <h3>All GameNights:</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-10">
+                                <div class="table-responsive" tabindex="2">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Organizer</th>
+                                                <th>Title</th>
+                                                <th>Date</th>
+                                                <th>Adults / Family</th>
+                                                <th>Details</th>
+                                                <th>Dietary hardcoded</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model == null)
+                                            {
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No GameNights found...</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                @foreach (var r in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="user-icon">
+                                                            <i class="fa-duotone fa-user-crown"></i> @r.Organizer.Name
+                                                        </td>
+                                                        <td class="w-25">
+                                                            @r.Name
+                                                        </td>
+                                                        <td>
+                                                            @($"{@r.DateTime:dd-MM-yyyy HH:mm}")
+                                                        </td>
+                                                        <td>
+                                                            <a asp-controller="Gamenight" asp-action="GameNightDetails" asp-route-id="@r.Id" class="btn btn-primary">
+                                                                <i class="fa-regular fa-circle-info"></i> Detail page
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-truncate">
+                                                            <ul class="list-unstyled  mb-0">
+                                                                <li class="diets-allergies">
+                                                                    <i class="fa-regular fa-leaf-heart text-success"></i>
+                                                                </li>
+                                                                <li class="diets-allergies">
+                                                                    <i class="fa-solid fa-wine-glass text-danger"></i>
+                                                                </li>
+                                                                <li class="diets-allergies">
+                                                                    <i class="fa-regular fa-wheat text-warning"></i>
+                                                                </li>
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-2">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-dark">
+                                        Legend diets / allergies
+                                    </li>
+
+                                    <li class="list-group-item icon-normal">
+                                        <i class="fa-regular fa-leaf-heart text-success"></i>&emsp;Vegan
+                                    </li>
+                                    <li class="list-group-item icon-crossed">
+                                        <i class="fa-solid fa-meat"></i>&emsp;Vegetarian
+                                    </li>
+                                    <li class="list-group-item icon-normal">
+                                        <i class="fa-regular fa-peanuts"></i>&emsp;Contains nuts
+                                    </li>
+                                    <li class="list-group-item icon-normal">
+                                        <i class="fa-regular fa-wheat text-warning"></i>&emsp;Contains gluten
+                                    </li>
+                                    <li class="list-group-item icon-crossed">
+                                        <i class="fa-regular fa-wheat text-warning"></i>&emsp;Gluten-free
+                                    </li>
+                                    <li class="list-group-item icon-crossed">
+                                        <i class="fa-solid fa-wine-glass text-danger"></i>&emsp;Alchohol-free
+                                    </li>
+                                    <li class="list-group-item icon-crossed">
+                                        <i class="fa-solid fa-cow"></i>&emsp;Lactose-free
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
