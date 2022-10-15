@@ -1,5 +1,6 @@
 ﻿using Core.Domain;
 using Core.DomainServices;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,28 @@ namespace Infrastructure
 {
     public class GameNightRepository : IGameNightRepository
     {
-        public Task AddGameNight(GameNight GameNight)
+
+        private readonly BoardgamesContext _context;
+
+        public GameNightRepository(BoardgamesContext context)
         {
-            throw new NotImplementedException();
+            this._context = context;
         }
 
-        public IEnumerable<GameNight> getGameNights()
+        public async Task AddGameNight(GameNight GameNight)
         {
-            throw new NotImplementedException();
+            _context.GameNights.Add(GameNight);
+            await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<GameNight> getGameNights()
+        {
+            return _context.GameNights.Include(g => g.Games).Include(g => g.Players);
+        }
+
+        public IEnumerable<GameNight> getGameNightsByOrganiser(int id)
+        {
+            return _context.GameNights.Where(p => p.OrganiserId == id);
         }
     }
 }
