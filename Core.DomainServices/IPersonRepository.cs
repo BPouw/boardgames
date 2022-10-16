@@ -5,7 +5,7 @@ namespace Core.DomainServices
 {
     public interface IPersonRepository
     {
-        IEnumerable<Person> GetPersonFromEmail(string email);
+        Person GetPersonFromEmail(string email);
     }
 }
 

@@ -25,13 +25,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IGameNightRepository, GameNightRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IGameListRepository, GameListRepository>();
+builder.Services.AddScoped<IPersonValidator, PersonValidator>();
+builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSession();
 
 builder.Services.AddMemoryCache().AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromHours(1);
     options.Cookie.IsEssential = true;
     options.Cookie.Name = "LoggedInObject";
     options.Cookie.HttpOnly = true;
@@ -65,6 +68,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=GameNight}/{action=Index}");
-
 
 app.Run();

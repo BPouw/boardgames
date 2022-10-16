@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace portal.Models
 {
-    public class LoginViewModel
+    public class LoginViewModel: IdentityUser
     {
         [Required]
         public string Name { get; set; }

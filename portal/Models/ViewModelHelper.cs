@@ -23,7 +23,7 @@ namespace portal.Models
             {
                 Id = gameNight.Id,
                 Name = gameNight.Name,
-                AddressID = gameNight.AddressId,
+                AddressId = gameNight.AddressId,
                 DateTime = gameNight.DateTime,
                 MaxPlayers = gameNight.MaxPlayers,
                 OrganizerId = gameNight.OrganiserId,

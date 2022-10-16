@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Add a new game";
+}
+<h1>@ViewData["Title"]</h1>
+
+@model NewGameNightViewModel
+
+<div>
+
+    <div asp-validation-summary="All"></div>
+
+    <div>
+        <form asp-action="CreateGameNight" method="post">
+
+            <div class="form-group">
+                <label asp-for="Name">Enter the title:</label>
+                <input class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GameTime">Enter the date and time:</label>
+                <input class="form-control" asp-for="GameTime" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaxPlayers">Enter the maximum amount of players:</label>
+                <input class="form-control" asp-for="MaxPlayers" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GameIds">What are we playing?:</label>
+                <select class="form-control" asp-for="GameIds" asp-items="@ViewBag.Games" multiple></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdultsOnly">Adults only?:</label>
+                <input type="checkbox" asp-for="AdultsOnly" />
+            </div>
+
+            <div class="form-group row">
+                <button class="btn btn-primary col-sm-4 text-center">Add game</button>
+            </div>
+        </form>
+    </div>
+</div>

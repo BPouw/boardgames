@@ -16,6 +16,7 @@ namespace Core.Domain
         public int OrganiserId { get; set; }
         public Person Organiser { get; set; }
         public int MaxPlayers { get; set; }
+        public bool AdultsOnly { get; set; }
         public ICollection<Person> Players { get; set; }
         public ICollection<Game> Games { get; set; }
     }

@@ -41,11 +41,29 @@ namespace Infrastructure
             modelBuilder.Entity<Game>().HasIndex(o => o.Name).IsUnique();
 
             modelBuilder.Entity<Game>().HasData(
-               new Game() { Id = 1, Name = "MarioKart", AdultsOnly = false, category = Category.Computergame, Description = "It's me Mario", genre = Genre.Family, });
+               new Game() { Id = 1, Name = "MarioKart", AdultsOnly = false, category = Category.Computergame, Description = "It's me Mario", genre = Genre.Racing, });
+
+            modelBuilder.Entity<Game>().HasData(
+                 new Game() { Id = 2, Name = "Monopoly", AdultsOnly = false, category = Category.Boardgame, Description = "Can you buy all the houses?", genre = Genre.Family, });
+
+            modelBuilder.Entity<Game>().HasData(
+                 new Game() { Id = 3, Name = "Scrabble", AdultsOnly = false, category = Category.Boardgame, Description = "Scribble, Scrubble, Scrabble", genre = Genre.Mind, });
+
+            modelBuilder.Entity<Game>().HasData(
+                 new Game() { Id = 4, Name = "Cards against humanity", AdultsOnly = true, category = Category.Cardgame, Description = "How offensive can you get?", genre = Genre.Fantasy, });
+
+            modelBuilder.Entity<Game>().HasData(
+                  new Game() { Id = 5, Name = "Poker", AdultsOnly = true, category = Category.Cardgame, Description = "Nice hand bro", genre = Genre.Mind, });
+
+            modelBuilder.Entity<Game>().HasData(
+                 new Game() { Id = 6, Name = "Blackjack", AdultsOnly = true, category = Category.Cardgame, Description = "Dont hit at 21", genre = Genre.Mind, });
 
 
             modelBuilder.Entity<GameNight>().HasData(
-             new GameNight() { Id = 1, Name = "MarioKart", MaxPlayers = 2, DateTime = DateTime.Now, AddressId = 1, OrganiserId = 1 });
+             new GameNight() { Id = 1, Name = "MarioKart session", MaxPlayers = 6, DateTime = DateTime.Now, AddressId = 1, OrganiserId = 1, AdultsOnly = false });
+
+            modelBuilder.Entity<GameNight>().HasData(
+             new GameNight() { Id = 2, Name = "Poker night", MaxPlayers = 6, DateTime = DateTime.Now, AddressId = 3, OrganiserId = 2, AdultsOnly = true });
 
             modelBuilder.Entity<Person>()
                 .HasMany(x => x.GameNights)

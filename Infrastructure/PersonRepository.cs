@@ -13,10 +13,9 @@ namespace Infrastructure
             _context = context;
         }
 
-        public IEnumerable<Person> GetPersonFromEmail(string email)
+        public Person GetPersonFromEmail(string email)
         {
-            var p = _context.People.Where(person => person.Email.Equals(email));
-            return p.ToList();
+            return _context.People.SingleOrDefault(p => p.Email == email);
         }
     }
 }

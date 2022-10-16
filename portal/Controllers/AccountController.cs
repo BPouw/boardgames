@@ -44,8 +44,8 @@ namespace portal.Controllers
 
             if (user != null)
                 {
-                Person person = _personRepository.GetPersonFromEmail(loginModel.Name).First();
-                HttpContext.Session.SetObject("PersonObject", person);
+                Person person = _personRepository.GetPersonFromEmail(loginModel.Name);
+                HttpContext.Session.SetObject("LoggedInObject", person);
                 await signInManager.SignOutAsync();
                     if ((await signInManager.PasswordSignInAsync(user,
                         loginModel.Password, false, false)).Succeeded)

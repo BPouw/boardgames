@@ -34,5 +34,10 @@ namespace Infrastructure
         {
             return _context.GameNights.Where(p => p.OrganiserId == id);
         }
+
+        //public IEnumerable<GameNight> getChildFriendlyGameNights()
+        //{
+        //    return _context.GameNights.Where(g => g.)
+        //}
     }
 }
