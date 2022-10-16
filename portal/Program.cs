@@ -11,10 +11,10 @@ var securityString = builder.Configuration.GetConnectionString("IdentityContextC
 var boardgamesString = builder.Configuration.GetConnectionString("BoardgamesContextConnection") ?? throw new InvalidOperationException("Connection string 'BoardgamesContextConnection' not found");
 
 builder.Services.AddDbContext<Infrastructure.SecurityContext>(options =>
-    options.UseSqlServer(securityString));
+    options.UseSqlServer(securityString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddDbContext<BoardgamesContext>(options =>
-    options.UseSqlServer(boardgamesString));
+    options.UseSqlServer(boardgamesString, options => options.EnableRetryOnFailure()));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<Infrastructure.SecurityContext>();
@@ -61,9 +61,10 @@ app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
 
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}");
+    pattern: "{controller=GameNight}/{action=Index}");
 
 
 app.Run();
