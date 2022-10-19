@@ -11,32 +11,33 @@ using portal.Models;
 namespace portal.Controllers
 {
     [Authorize]
-    public class GameNightController: Controller
+    public class GameNightController : Controller
     {
         private readonly ILogger<GameNightController> _logger;
         private IGameNightRepository _gameNightRepository;
         private IGameRepository _gameRepository;
         private IPersonRepository _personRepository;
-        private IGameListRepository _gameListRepository;
+        private IGameNightGameRepository _gameNightGameRepository;
         private IPersonValidator _personValidator;
         private IGameNightValidator _gameNightValidator;
+        private IGameNightPlayerRepository _gameNightPlayerRepository;
+        private string PERSON_SESSION = "PersonObject";
 
-        private Person person;
-        
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public GameNightController(ILogger<GameNightController> logger, IGameNightRepository gameNightRepository, IHttpContextAccessor httpContextAccessor, IGameRepository gameRepository, IPersonRepository personRepository, IGameListRepository gameListRepository,
-            IGameNightValidator gameNightValidator, IPersonValidator personValidator) 
+        public GameNightController(ILogger<GameNightController> logger, IGameNightRepository gameNightRepository, IHttpContextAccessor httpContextAccessor, IGameRepository gameRepository, IPersonRepository personRepository, IGameNightGameRepository gameListRepository,
+            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator)
         {
             this._logger = logger;
             this._gameNightRepository = gameNightRepository;
             this._httpContextAccessor = httpContextAccessor;
             this._gameRepository = gameRepository;
             this._personRepository = personRepository;
-            this._gameListRepository = gameListRepository;
+            this._gameNightGameRepository = gameListRepository;
             this._personValidator = personValidator;
             this._gameNightValidator = gameNightValidator;
+            this._gameNightPlayerRepository = playerRepository;
         }
 
         public IActionResult Index()
@@ -46,10 +47,8 @@ namespace portal.Controllers
 
         public IActionResult JoinedGameNights()
         {
-            ViewBag.Person = this.person;
             //ViewBag.Gamenights = _playersRepository.getGameNights();
             //ViewBag.Players = _playersRepository.getAllPlayersFromGameNight();
-
             return View();
         }
 
@@ -66,34 +65,39 @@ namespace portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 var GameNightToCreate = new GameNight();
 
                 if (_gameNightValidator.DateInPresent(newGameNight.GameTime))
                 {
-                    this.person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+                    Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
                     GameNightToCreate.MaxPlayers = newGameNight.MaxPlayers;
                     GameNightToCreate.Name = newGameNight.Name;
                     GameNightToCreate.DateTime = newGameNight.GameTime;
                     GameNightToCreate.AdultsOnly = newGameNight.AdultsOnly;
 
-                    GameNightToCreate.AddressId = this.person.AddressId;
-                    GameNightToCreate.OrganiserId = this.person.Id;
+                    GameNightToCreate.AddressId = person.AddressId; 
+                    GameNightToCreate.OrganiserId = person.Id;
 
+                    // create gamenight
                     await _gameNightRepository.AddGameNight(GameNightToCreate);
 
-                    foreach (int id in newGameNight.GameIds)
-                    {
-                        GameList gameList = new GameList();
-                        gameList.GameId = id;
-                        gameList.GameNightId = GameNightToCreate.Id;
-                        this._gameListRepository.AddGameToGameNight(gameList);
-                    }
+                    int[] annoying = newGameNight.GameIds;
+
+                    // add the games to the night
+                    //await _gameNightGameRepository.AddManyGamesToGameNight(annoying, GameNightToCreate.Id);
+
+                    GameNightPlayer organiser = new GameNightPlayer();
+                    organiser.GameNightId = GameNightToCreate.Id;
+                    organiser.PersonId = person.Id;
+
+                    // add the organiser to the gamenight 
+                    await _gameNightPlayerRepository.AddPlayer(organiser);
 
                     return RedirectToAction("Index");
                 }
 
-                ModelState.AddModelError("GameTime", "A game has to be in the future boss");
+                ModelState.AddModelError("GameTime", "A game has to be in the future");
 
             }
 
@@ -101,6 +105,57 @@ namespace portal.Controllers
             return View(newGameNight);
 
         }
+
+        [HttpGet]
+        public IActionResult DetailsGameNight(int id)
+        {
+            GameNight gameNight = _gameNightRepository.getGameNightPopulated(id);
+            HttpContext.Session.SetInt32("GameNightId", id);
+
+            Person person = _personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+
+            ViewBag.PersonId = person.Id;
+
+            if (HttpContext.Session.GetInt32("JoinedStatusId") == id) {
+                ViewBag.JoinedStatus = HttpContext.Session.GetString("JoinedStatus");
+            } else {
+                ViewBag.JoinedStatus = "";
+            }
+
+            return View(gameNight.ToViewModel());
+        }
+
+        public async Task JoinGameNight()
+        {
+            GameNightPlayer player = new GameNightPlayer();
+            int? id = HttpContext.Session.GetInt32("GameNightId");
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
+            player.PersonId = person.Id;
+            player.GameNightId = gameNight.Id;
+
+            if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth)) {
+                HttpContext.Session.SetInt32("JoinedStatusId", (int)id);
+                HttpContext.Session.SetString("JoinedStatus", "You are too young to participate in this game night");
+                ViewBag.JoinedStatus = "You are too young to participate in this game night";
+                // redirect or something ARRHGHGHHGHGHG
+            } else
+            {
+                await this._gameNightPlayerRepository.AddPlayer(player);
+                ViewBag.JoinedStatus = "You joined this gamenight!";
+
+                RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+            }
+
+
+        }
+
+        [HttpGet]
+        public IActionResult HostedGameNights()
+        {
+            return View();
+        }
+
 
         private void PrefillSelectOptions()
         {

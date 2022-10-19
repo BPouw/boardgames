@@ -12,5 +12,7 @@ namespace Core.DomainServices
         IQueryable<GameNight> getGameNights();
         IEnumerable<GameNight> getGameNightsByOrganiser(int id);
         Task AddGameNight(GameNight gameNight);
+        GameNight getGameNightById(int id);
+        GameNight getGameNightPopulated(int id);
     }
 }

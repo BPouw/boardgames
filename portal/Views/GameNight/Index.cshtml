@@ -1,15 +1,42 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang="en">
+
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/" />
+
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
-    <link href="/css/dashboard.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css" />
 </head>
 
 <body>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6 col-lg-3">
+                <div class="button-card card rounded border-start border-0 border-5 border-primary">
+                    <a asp-controller="GameNight" asp-action="HostedGameNights">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Click to see</p>
+                                    <h4 class="my-1 text-primary">My hosted<br> GameNights</h4>
+                                </div>
+                                <div class="button-card-icon rounded-circle bg-gradient-blue text-white ms-auto">
+                                    <i class="fa-regular fa-gamepad"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
                 <div class="button-card card radius-10 border-start border-0 border-5 border-success">
-                    <a asp-controller="Gamenight" asp-action="JoinedGameNights">
+                    <a asp-controller="GameNight" asp-action="JoinedGameNights">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
@@ -17,23 +44,10 @@
                                     <h4 class="my-1 text-success">My joined<br> GameNights</h4>
                                 </div>
                                 <div class="button-card-icon rounded-circle bg-gradient-green text-white ms-auto">
-                                    <i class="fa-solid fa-users-medical"></i>
+                                    <i class="fa-solid fa-users"></i>
                                 </div>
                             </div>
                         </div>
-                    </a>
-                    <a asp-controller="Gamenight" asp-action="CreateGameNight">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <p class="mb-0 text-secondary">Click to create</p>
-                                <h4 class="my-1 text-success"> GameNights</h4>
-                            </div>
-                            <div class="button-card-icon rounded-circle bg-gradient-green text-white ms-auto">
-                                <i class="fa-solid fa-users-medical"></i>
-                            </div>
-                        </div>
-                    </div>
                     </a>
                 </div>
             </div>
@@ -72,7 +86,7 @@
                                                 {
                                                     <tr>
                                                         <td class="user-icon">
-                                                            <i class="fa-duotone fa-user-crown"></i> @r.Organizer.Name
+                                                            @*<i class="fa-duotone fa-user-crown"></i> @r.Organiser.Name*@
                                                         </td>
                                                         <td class="w-25">
                                                             @r.Name
@@ -80,11 +94,17 @@
                                                         <td>
                                                             @($"{@r.DateTime:dd-MM-yyyy HH:mm}")
                                                         </td>
+
+                                                            @if (@r.AdultsOnly == true)
+                                                                {
+                                                                    <td>Adults</td>
+                           
+                                                                } else
+                                                                {
+                                                                    <td>Family friendly</td> 
+                                                                }
                                                         <td>
-                                                           @r.AdultsOnly
-                                                        </td>
-                                                        <td>
-                                                            <a asp-controller="Gamenight" asp-action="GameNightDetails" asp-route-id="@r.Id" class="btn btn-primary">
+                                                            <a asp-controller="GameNight" asp-action="DetailsGameNight" asp-route-id="@r.Id" class="btn btn-primary">
                                                                 <i class="fa-regular fa-circle-info"></i> Detail page
                                                             </a>
                                                         </td>
@@ -108,39 +128,11 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-2">
-                                <ul class="list-group">
-                                    <li class="list-group-item list-group-item-dark">
-                                        Legend diets / allergies
-                                    </li>
-
-                                    <li class="list-group-item icon-normal">
-                                        <i class="fa-regular fa-leaf-heart text-success"></i>&emsp;Vegan
-                                    </li>
-                                    <li class="list-group-item icon-crossed">
-                                        <i class="fa-solid fa-meat"></i>&emsp;Vegetarian
-                                    </li>
-                                    <li class="list-group-item icon-normal">
-                                        <i class="fa-regular fa-peanuts"></i>&emsp;Contains nuts
-                                    </li>
-                                    <li class="list-group-item icon-normal">
-                                        <i class="fa-regular fa-wheat text-warning"></i>&emsp;Contains gluten
-                                    </li>
-                                    <li class="list-group-item icon-crossed">
-                                        <i class="fa-regular fa-wheat text-warning"></i>&emsp;Gluten-free
-                                    </li>
-                                    <li class="list-group-item icon-crossed">
-                                        <i class="fa-solid fa-wine-glass text-danger"></i>&emsp;Alchohol-free
-                                    </li>
-                                    <li class="list-group-item icon-crossed">
-                                        <i class="fa-solid fa-cow"></i>&emsp;Lactose-free
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
+</html>

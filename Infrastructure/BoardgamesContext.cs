@@ -6,11 +6,11 @@ namespace Infrastructure
 {
     public class BoardgamesContext: DbContext
     {
-        public DbSet<Person> People { get; set; }
-        public DbSet<GameNight> GameNights { get; set; }
-        public DbSet<Game> Games { get; set; }
-        public DbSet<GameList> GameList { get; set; }
-        public DbSet<Players> Players { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<GameNight> GameNight { get; set; }
+        public DbSet<Game> Game { get; set; }
+        public DbSet<GameNightGame> GameNight_Game { get; set; }
+        public DbSet<GameNightPlayer> GameNight_Player { get; set; }
 
         public BoardgamesContext(DbContextOptions<BoardgamesContext> contextOptions): base(contextOptions)
         {
@@ -68,7 +68,7 @@ namespace Infrastructure
             modelBuilder.Entity<Person>()
                 .HasMany(x => x.GameNights)
                 .WithMany(x => x.Players)
-                .UsingEntity<Players>(
+                .UsingEntity<GameNightPlayer>(
                      x => x.HasOne(x => x.GameNight)
                      .WithMany().HasForeignKey(x => x.GameNightId),
                      x => x.HasOne(x => x.Person)
@@ -80,7 +80,7 @@ namespace Infrastructure
             modelBuilder.Entity<Game>()
                .HasMany(x => x.GameNights)
                .WithMany(x => x.Games)
-               .UsingEntity<GameList>(
+               .UsingEntity<GameNightGame>(
                    x => x.HasOne(x => x.GameNight)
                    .WithMany().HasForeignKey(x => x.GameNightId),
                    x => x.HasOne(x => x.Game)
@@ -104,15 +104,15 @@ namespace Infrastructure
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            modelBuilder.Entity<Players>().HasData(
-             new Players() { GameNightId = 1, PersonId = 1 });
-            modelBuilder.Entity<Players>().HasData(
-           new Players() { GameNightId = 1, PersonId = 2 });
-            modelBuilder.Entity<Players>().HasData(
-           new Players() { GameNightId = 1, PersonId = 3 });
+            modelBuilder.Entity<GameNightPlayer>().HasData(
+             new GameNightPlayer() { GameNightId = 1, PersonId = 1 });
+            modelBuilder.Entity<GameNightPlayer>().HasData(
+           new GameNightPlayer() { GameNightId = 1, PersonId = 2 });
+            modelBuilder.Entity<GameNightPlayer>().HasData(
+           new GameNightPlayer() { GameNightId = 1, PersonId = 3 });
 
-            modelBuilder.Entity<GameList>().HasData(
-            new GameList() { GameNightId = 1, GameId = 1 });
+            modelBuilder.Entity<GameNightGame>().HasData(
+            new GameNightGame() { GameNightId = 1, GameId = 1 });
 
 
 

@@ -26,16 +26,20 @@ namespace portal.Models
                 AddressId = gameNight.AddressId,
                 DateTime = gameNight.DateTime,
                 MaxPlayers = gameNight.MaxPlayers,
-                OrganizerId = gameNight.OrganiserId,
-                Organizer = gameNight.Organiser
+                OrganiserId = gameNight.OrganiserId,
+                Organiser = gameNight.Organiser,
+                AdultsOnly = gameNight.AdultsOnly,
+                Address = gameNight.Address,
+                Players = gameNight.Players,
+                Games = gameNight.Games
 
             };
             return result;
         }
 
-        public static List<PlayersViewModel> ToViewModel(this IEnumerable<Players> es)
+        public static List<GameNightPlayerViewModel> ToViewModel(this IEnumerable<GameNightPlayer> es)
         {
-            var result = new List<PlayersViewModel>();
+            var result = new List<GameNightPlayerViewModel>();
 
             foreach (var e in es)
             {
@@ -44,9 +48,9 @@ namespace portal.Models
             return result;
         }
 
-        public static PlayersViewModel ToViewModel(this Players e)
+        public static GameNightPlayerViewModel ToViewModel(this GameNightPlayer e)
         {
-            var result = new PlayersViewModel
+            var result = new GameNightPlayerViewModel
             {
                 PersonID = e.PersonId,
                 GameNightID = e.GameNightId,
@@ -57,9 +61,9 @@ namespace portal.Models
 
             return result;
         }
-        public static List<GameListViewModel> ToViewModel(this IEnumerable<GameList> es)
+        public static List<GameNightGameViewModel> ToViewModel(this IEnumerable<GameNightGame> es)
         {
-            var result = new List<GameListViewModel>();
+            var result = new List<GameNightGameViewModel>();
 
             foreach (var e in es)
             {
@@ -68,12 +72,12 @@ namespace portal.Models
             return result;
         }
 
-        public static GameListViewModel ToViewModel(this GameList e)
+        public static GameNightGameViewModel ToViewModel(this GameNightGame e)
         {
-            var result = new GameListViewModel
+            var result = new GameNightGameViewModel
             {
                 GameID = e.GameId,
-                GameNightID = e.GameNightId,
+                GameNightId = e.GameNightId,
                 Game = e.Game,
                 GameNight = e.GameNight
 

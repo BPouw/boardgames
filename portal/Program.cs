@@ -26,9 +26,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IGameNightRepository, GameNightRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
-builder.Services.AddScoped<IGameListRepository, GameListRepository>();
+builder.Services.AddScoped<IGameNightGameRepository, GameNightGameRepository>();
 builder.Services.AddScoped<IPersonValidator, PersonValidator>();
 builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
+builder.Services.AddScoped<IGameNightPlayerRepository, GameNightPlayerRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSession();

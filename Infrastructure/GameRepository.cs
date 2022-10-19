@@ -15,17 +15,17 @@ namespace Infrastructure
 
         public IEnumerable<Game> getAllGames()
         {
-            return _context.Games;
+            return _context.Game;
         }
 
         public IEnumerable<Game> getAllChildFriendlyGames()
         {
-            return _context.Games.Where(g => g.AdultsOnly == false);
+            return _context.Game.Where(g => g.AdultsOnly == false);
         }
 
         public Game GetById(int gameId)
         {
-            return _context.Games.SingleOrDefault(g => g.Id == gameId);
+            return _context.Game.SingleOrDefault(g => g.Id == gameId);
         }
     }
 }

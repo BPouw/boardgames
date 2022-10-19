@@ -3,7 +3,7 @@ using Core.Domain;
 
 namespace portal.Models
 {
-    public class PlayersViewModel
+    public class GameNightPlayerViewModel
     {
         public Person Person { get; set; }
         public int PersonID { get; set; }

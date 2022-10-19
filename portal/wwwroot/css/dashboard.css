@@ -1,24 +1,24 @@
 ﻿/* Styling dashboard */
 body {
-    background: linear-gradient(315deg, #a0c0c6 0%, #b0cacf 15%, #c0d5d9 33%, #f2f7f7 100%);
+    background: linear-gradient(315deg, #46b361 0%, #98d5a7 5%, #b6e2c1 15%, #d3eed9 33%, #fcfffc 100%);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: open sans, sans-serif;
-    color: #172A3A;
+    color: #2D3A3A;
 }
 
 h1 {
     font-size: 3vmax;
     font-weight: 800;
-    color: #004346;
+    color: #144921;
     text-align: center;
     margin-top: 30px;
 }
 
 /* Card (background item) */
 .table-card.card {
-    background-color: #f2f7f7;
+    background-color: #fcfffc;
     border-radius: 10px;
     border: none;
     position: relative;
@@ -27,7 +27,7 @@ h1 {
 
     .table-card.card .card-header {
         background-color: transparent;
-        border-bottom-color: #f2f7f7;
+        border-bottom-color: #fcfffc;
         line-height: 30px;
         align-self: center;
         width: 100%;
@@ -56,8 +56,8 @@ td:last-child {
 }
 
 .table:not(.table-sm) thead th {
-    border-color: #172A3A !important;
-    background-color: #a0c0c6;
+    border-color: #2D3A3A !important;
+    background-color: #98d5a7;
     color: #040F0F;
     font-weight: normal;
     padding-top: 15px;
@@ -68,19 +68,19 @@ td:last-child {
 }
 
 tr {
-    border-color: #dae8eb;
+    border-color: #A1D9AF;
     border-style: solid;
     vertical-align: middle;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-    --bs-table-accent-bg: #dae8eb;
-    color: #172A3A;
+    --bs-table-accent-bg: #d4eeda;
+    color: #2D3A3A;
 }
 
 .table-striped > tbody > tr:nth-of-type(even) {
-    --bs-table-accent-bg: #f2f7f7;
-    color: #172A3A;
+    --bs-table-accent-bg: #fcfffc;
+    color: #2D3A3A;
 }
 
 .user-icon i {
@@ -151,7 +151,7 @@ tr {
     }
 
 .list-group-item-dark {
-    background-color: #a0c0c6 !important;
+    background-color: #98d5a7 !important;
     color: #040F0F !important;
 }
 
@@ -172,7 +172,7 @@ tr {
 
 /* Card button */
 .button-card.card {
-    background-color: #f2f7f7;
+    background-color: #fcfffc;
     margin-bottom: 30px;
 }
 
@@ -187,7 +187,7 @@ tr {
     .button-card.card:focus,
     .button-card.card:active {
         /* border: 10px solid #ededed!important; */
-        box-shadow: 0px 0px 0px 0.3rem #a0c0c680 !important;
+        box-shadow: 0px 0px 0px 0.3rem #46b36180 !important;
     }
 
 .button-card-icon {
@@ -203,44 +203,16 @@ tr {
 
 /* Colors */
 .text-primary {
-    color: #237ba1 !important;
+    color: #586DD6 !important;
 }
 
 .border-primary {
-    border-color: #237ba1 !important;
+    border-color: #586DD6 !important;
 }
 
 .bg-gradient-blue {
-    background: linear-gradient(-45deg, #74B3CE, #237ba1) !important;
+    background: linear-gradient(-45deg, #17ead9, #6078ea) !important;
 }
-
-/* Replace the colors of the standard bootstrap button-primary */
-.btn-primary {
-    background-color: #28666C;
-    border-color: #28666C;
-}
-
-    .btn-primary:hover {
-        background-color: #1c5459;
-        border-color: #004346;
-    }
-
-    .btn-primary:active {
-        background-color: #004346;
-        border-color: #508991;
-    }
-
-    .btn-primary:focus {
-        background-color: #1c5459;
-        border-color: #004346;
-        box-shadow: 0 0 0 0.25rem rgba(80, 137, 145, .5) !important;
-    }
-
-    .btn-primary:disabled {
-        background-color: #4c6a6c;
-        border-color: #4c6a6c;
-    }
-
 
 
 .bg-gradient-red {
@@ -248,15 +220,15 @@ tr {
 }
 
 .text-success {
-    color: #09BC8A !important;
+    color: #248232 !important;
 }
 
 .border-success {
-    border-color: #09BC8A !important;
+    border-color: #248232 !important;
 }
 
 .bg-gradient-green {
-    background: linear-gradient(-45deg, #7DDAC2, #09BC8A) !important;
+    background: linear-gradient(-45deg, #b6e2c1, #248232) !important;
 }
 
 .bg-gradient-yellow {

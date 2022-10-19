@@ -15,7 +15,7 @@ namespace Infrastructure
 
         public Person GetPersonFromEmail(string email)
         {
-            return _context.People.SingleOrDefault(p => p.Email == email);
+            return _context.Person.SingleOrDefault(p => p.Email == email);
         }
     }
 }

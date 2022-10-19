@@ -1,0 +1,102 @@
+﻿body {
+    background: linear-gradient(315deg, #46b361 0%, #98d5a7 5%, #b6e2c1 15%, #d3eed9 33%, #fcfffc 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: open sans, sans-serif;
+    color: #2D3A3A;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fcfffc;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+hr {
+    margin: 0.7rem 0;
+}
+
+/* accordion gedoe */
+.accordion-body {
+    background-color: #fff;
+}
+
+.accordion-button:focus {
+    z-index: 3;
+    border-color: #248232;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem #2BA84A40;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #2D3A3A;
+    background-color: #46B36140;
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23144921'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-section .panel-default > .panel-heading {
+    border: 0;
+    background: #fff;
+    padding: 0;
+}
+
+.accordion-section .panel-default .panel-title a:after {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-size: 3rem;
+    content: "\f106";
+    color: #144921 !important;
+    float: right;
+    margin-top: -12px;
+}
+
+.accordion-section .panel-default .panel-title a.collapsed:after {
+    content: "\f107";
+}
+
+
+/* Colors */
+.text-success {
+    color: #248232 !important;
+}
+
+.border-success {
+    border-color: #248232 !important;
+}
+
+
+.btn-success {
+    background-color: #248232;
+    border-color: #248232;
+}
+
+    .btn-success:hover {
+        background-color: #1C662A;
+        border-color: #144921;
+    }
+
+    .btn-success:active {
+        background-color: #144921;
+        border-color: #248232;
+    }
+
+    .btn-success:focus {
+        background-color: #1C662A;
+        border-color: #144921;
+        box-shadow: 0 0 0 0.25rem rgba(43, 168, 74, .5) !important;
+    }
+
+    .btn-success:disabled {
+        background-color: #248232;
+        border-color: #248232;
+    }

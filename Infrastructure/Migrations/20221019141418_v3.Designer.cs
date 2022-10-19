@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BoardgamesContext))]
-    partial class BoardgamesContextModelSnapshot : ModelSnapshot
+    [Migration("20221019141418_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,7 +108,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
 
                     b.HasData(
                         new
@@ -206,7 +208,7 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             AddressId = 1,
                             AdultsOnly = false,
-                            DateTime = new DateTime(2022, 10, 19, 16, 17, 25, 512, DateTimeKind.Local).AddTicks(3900),
+                            DateTime = new DateTime(2022, 10, 19, 16, 14, 18, 21, DateTimeKind.Local).AddTicks(6960),
                             MaxPlayers = 6,
                             Name = "MarioKart session",
                             OrganiserId = 1
@@ -216,7 +218,7 @@ namespace Infrastructure.Migrations
                             Id = 2,
                             AddressId = 3,
                             AdultsOnly = true,
-                            DateTime = new DateTime(2022, 10, 19, 16, 17, 25, 512, DateTimeKind.Local).AddTicks(3960),
+                            DateTime = new DateTime(2022, 10, 19, 16, 14, 18, 21, DateTimeKind.Local).AddTicks(7020),
                             MaxPlayers = 6,
                             Name = "Poker night",
                             OrganiserId = 2

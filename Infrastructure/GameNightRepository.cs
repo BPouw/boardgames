@@ -21,23 +21,30 @@ namespace Infrastructure
 
         public async Task AddGameNight(GameNight GameNight)
         {
-            _context.GameNights.Add(GameNight);
+            _context.GameNight.Add(GameNight);
             await _context.SaveChangesAsync();
+        }
+
+        public GameNight getGameNightById(int id)
+        {
+            return _context.GameNight.Where(p => p.Id == id).First();
+        }
+
+        public GameNight getGameNightPopulated(int id)
+        {
+            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Games).Include(g => g.Players).Include(g => g.Address).First();
         }
 
         public IQueryable<GameNight> getGameNights()
         {
-            return _context.GameNights.Include(g => g.Games).Include(g => g.Players);
+            return _context.GameNight.Include(g => g.Games).Include(g => g.Players);
         }
 
         public IEnumerable<GameNight> getGameNightsByOrganiser(int id)
         {
-            return _context.GameNights.Where(p => p.OrganiserId == id);
+            return _context.GameNight.Where(p => p.OrganiserId == id);
         }
 
-        //public IEnumerable<GameNight> getChildFriendlyGameNights()
-        //{
-        //    return _context.GameNights.Where(g => g.)
-        //}
+
     }
 }
