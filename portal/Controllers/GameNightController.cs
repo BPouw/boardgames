@@ -134,18 +134,25 @@ namespace portal.Controllers
 
             if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth)) {
                 // gooi een too young error op de UI
-                _toastNotification.Warning("You are too young to join this gamenight.", 10);
+                _toastNotification.Warning("You are too young to join this gamenight", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             } else
             {
-                await this._gameNightPlayerRepository.AddPlayer(player);
-                _toastNotification.Success("You joined this gamenight.", 10);
+                try
+                {
+                    await this._gameNightPlayerRepository.AddPlayer(player);
+                } catch (Exception e)
+                {
+                    _toastNotification.Warning("You have already joined this gamenight", 10);
+                }
+
+                _toastNotification.Success("You joined this gamenight", 10);
 
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             }
         }
 
-        public async Task LeaveGameNight()
+        public async Task<IActionResult> LeaveGameNight()
         {
             GameNightPlayer player = new GameNightPlayer();
             int? id = HttpContext.Session.GetInt32("GameNightId");
@@ -154,9 +161,17 @@ namespace portal.Controllers
             player.PersonId = person.Id;
             player.GameNightId = gameNight.Id;
 
-            await this._gameNightPlayerRepository.DeletePlayer(player);
+            try
+            {
+                await this._gameNightPlayerRepository.DeletePlayer(player);
+            } catch (Exception e)
+            {
+                _toastNotification.Warning("You are not a participant of this gamenight", 10);
+            }
 
-            RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+            _toastNotification.Warning("You left this gamenight", 10);
+
+            return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
         }
 
         [HttpGet]

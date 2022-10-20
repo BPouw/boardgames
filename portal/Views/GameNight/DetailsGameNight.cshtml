@@ -1,8 +1,4 @@
 ﻿
-<h1>@Model.Name</h1>
-<h4> @ViewBag.JoinedStatus</h4>
-<a asp-controller="GameNight" asp-action="JoinGameNight" class="btn btn-primary">Join this gamenight anchor tag </a>
-
 <head>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
     <link rel="stylesheet" type="text/css" href="~/css/detail.css" />
@@ -26,11 +22,11 @@
                                         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class='fa-solid fa-pencil'></i> Edit</a>
                                         <a class="btn btn-danger" asp-controller="gamenight" asp-action="Delete" asp-route-id="@Model.Id"><i class="fa-solid fa-trash"></i> Delete </a>
                                     </div>
-                                
                             }
                             else
                             {
-                                <a class="btn btn-success" asp-controller="gamenight" asp-action="JoinGameNight"><i class="fa-solid fa-trash"></i> Join </a>
+                                <a class="btn btn-success" asp-controller="gamenight" asp-action="JoinGameNight"><i class="fa-solid fa-plus"></i> Join </a>
+                                <a class="btn btn-danger" asp-controller="gamenight" asp-action="LeaveGameNight"><i class="fa-solid fa-minus"></i> Leave </a>
                             }
                         </div>
                     </div>

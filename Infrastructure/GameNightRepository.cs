@@ -27,17 +27,17 @@ namespace Infrastructure
 
         public GameNight getGameNightById(int id)
         {
-            return _context.GameNight.Where(p => p.Id == id).First();
+            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).First();
         }
 
         public GameNight getGameNightPopulated(int id)
         {
-            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Games).Include(g => g.Players).Include(g => g.Address).First();
+            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Games).Include(g => g.Players).Include(g => g.Address).Include(g => g.Organiser).First();
         }
 
         public IQueryable<GameNight> getGameNights()
         {
-            return _context.GameNight.Include(g => g.Games).Include(g => g.Players);
+            return _context.GameNight.Include(g => g.Games).Include(g => g.Organiser);
         }
 
         public IEnumerable<GameNight> getGameNightsByOrganiser(int id)

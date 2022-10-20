@@ -8,9 +8,9 @@ namespace portal.Models
         private const string email = "boris.pouw@email.com";
         private const string password = "$Secret123456";
 
-        private const string email2 = "stefi.nicoara@email.com";
+        private const string email2 = "ntstefi@email.com";
 
-        private const string email3 = "borispouw@gmail.com";
+        private const string email3 = "piet@email.com";
 
 
         public static async Task EnsurePopulated(UserManager<IdentityUser> userManager)
@@ -25,14 +25,14 @@ namespace portal.Models
             IdentityUser user2 = await userManager.FindByIdAsync(email2);
             if (user2 == null)
             {
-                user2 = new IdentityUser("stefi.nicoara@email.com");
+                user2 = new IdentityUser("ntstefi@email.com");
                 await userManager.CreateAsync(user2, password);
             }
 
             IdentityUser user3 = await userManager.FindByIdAsync(email3);
             if (user3 == null)
             {
-                user3 = new IdentityUser("borispouw@gmail.com");
+                user3 = new IdentityUser("piet@email.com");
                 await userManager.CreateAsync(user3, password);
             }
         }
