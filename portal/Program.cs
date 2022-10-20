@@ -5,6 +5,8 @@ using Core.DomainServices;
 using portal.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Security;
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var securityString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -47,6 +49,13 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.MinimumSameSitePolicy = SameSiteMode.Strict;
 });
 
+builder.Services.AddNotyf(config =>
+{
+    config.DurationInSeconds = 5;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.TopRight;
+});
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -64,6 +73,8 @@ app.UseAuthentication();
 
 app.UseSession();
 app.UseAuthorization();
+
+app.UseNotyf();
 
 
 app.MapControllerRoute(

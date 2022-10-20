@@ -19,6 +19,12 @@ namespace Infrastructure
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeletePlayer(GameNightPlayer player)
+        {
+            _context.GameNight_Player.Remove(player);
+            await _context.SaveChangesAsync();
+        }
+
         public GameNightPlayer getGameNightPlayer(GameNightPlayer player)
         {
             throw new NotImplementedException();

@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
 using Infrastructure;
@@ -21,13 +22,14 @@ namespace portal.Controllers
         private IPersonValidator _personValidator;
         private IGameNightValidator _gameNightValidator;
         private IGameNightPlayerRepository _gameNightPlayerRepository;
+        private readonly INotyfService _toastNotification;
         private string PERSON_SESSION = "PersonObject";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         public GameNightController(ILogger<GameNightController> logger, IGameNightRepository gameNightRepository, IHttpContextAccessor httpContextAccessor, IGameRepository gameRepository, IPersonRepository personRepository, IGameNightGameRepository gameListRepository,
-            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator)
+            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator, INotyfService toastNotification)
         {
             this._logger = logger;
             this._gameNightRepository = gameNightRepository;
@@ -38,10 +40,12 @@ namespace portal.Controllers
             this._personValidator = personValidator;
             this._gameNightValidator = gameNightValidator;
             this._gameNightPlayerRepository = playerRepository;
+            this._toastNotification = toastNotification;
         }
 
         public IActionResult Index()
         {
+            _toastNotification.Success("A success toast that will last for 10 seconds.", 10);
             return View(_gameNightRepository.getGameNights().ToViewModel());
         }
 
@@ -116,16 +120,10 @@ namespace portal.Controllers
 
             ViewBag.PersonId = person.Id;
 
-            if (HttpContext.Session.GetInt32("JoinedStatusId") == id) {
-                ViewBag.JoinedStatus = HttpContext.Session.GetString("JoinedStatus");
-            } else {
-                ViewBag.JoinedStatus = "";
-            }
-
             return View(gameNight.ToViewModel());
         }
 
-        public async Task JoinGameNight()
+        public async Task<IActionResult> JoinGameNight()
         {
             GameNightPlayer player = new GameNightPlayer();
             int? id = HttpContext.Session.GetInt32("GameNightId");
@@ -135,19 +133,30 @@ namespace portal.Controllers
             player.GameNightId = gameNight.Id;
 
             if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth)) {
-                HttpContext.Session.SetInt32("JoinedStatusId", (int)id);
-                HttpContext.Session.SetString("JoinedStatus", "You are too young to participate in this game night");
-                ViewBag.JoinedStatus = "You are too young to participate in this game night";
-                // redirect or something ARRHGHGHHGHGHG
+                // gooi een too young error op de UI
+                _toastNotification.Warning("You are too young to join this gamenight.", 10);
+                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             } else
             {
                 await this._gameNightPlayerRepository.AddPlayer(player);
-                ViewBag.JoinedStatus = "You joined this gamenight!";
+                _toastNotification.Success("You joined this gamenight.", 10);
 
-                RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             }
+        }
 
+        public async Task LeaveGameNight()
+        {
+            GameNightPlayer player = new GameNightPlayer();
+            int? id = HttpContext.Session.GetInt32("GameNightId");
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
+            player.PersonId = person.Id;
+            player.GameNightId = gameNight.Id;
 
+            await this._gameNightPlayerRepository.DeletePlayer(player);
+
+            RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
         }
 
         [HttpGet]

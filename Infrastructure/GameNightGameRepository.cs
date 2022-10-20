@@ -32,9 +32,9 @@ namespace Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        public Task GetGameNightPlayer(GameNightGame gameNightGame)
+        public GameNightGame GetGameFromId(int id)
         {
-            throw new NotImplementedException();
+            return _context.GameNight_Game.Where(g => g.GameId == id).First();
         }
     }
 }

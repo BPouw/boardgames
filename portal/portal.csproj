@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <UserSecretsId>fb75506c-8665-41fd-9772-418cf3ef8d97</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="NToastNotify" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,9 +38,14 @@
     <None Remove="Views\Account\" />
     <None Remove="Microsoft.AspNetCore.Session" />
     <None Remove="Microsoft.AspNetCore.Http.Extensions" />
+    <None Remove="Views\Game\" />
+    <None Remove="SweetAlert" />
+    <None Remove="AspNetCoreHero.ToastNotification" />
+    <None Remove="NToastNotify" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\GameNight\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Game\" />
   </ItemGroup>
 </Project>
