@@ -1,0 +1,22 @@
+﻿@model GameImageViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddGameImage" asp-controller="Game" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Picture" class="control-label"></label>
+                <input asp-for="Picture" accept="image/*" />
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top:10px">
+                <input type="submit" value="CreateProfile" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

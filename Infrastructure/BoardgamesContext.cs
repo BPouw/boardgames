@@ -24,19 +24,19 @@ namespace Infrastructure
              new Address() { Id = 1, StreetName = "Tramsingel", City = "Breda", HouseNumber = 97, PostalCode = "4814AE" });
 
             modelBuilder.Entity<Person>().HasData(
-               new Person() { Id = 1, Name = "Boris Pouw", DateOfBirth = new DateTime(1998, 07, 08), Email = "boris@email.com", Gender = Gender.M, Shows = 0, NoShows = 0, AddressId = 1, });
+               new Person() { Id = 1, Name = "Boris Pouw", DateOfBirth = new DateTime(1998, 07, 08), Email = "boris@email.com", Gender = Gender.M, Shows = 0, NoShows = 0, AddressId = 1, AlcoholFree = false, Vegan = false, NutAllergy = true, LactoseIntolerant = false  });
 
             modelBuilder.Entity<Address>().HasData(
              new Address() { Id = 2, StreetName = "Pleinweg", City = "Rotterdam", HouseNumber = 199, PostalCode = "5317MJ" });
 
             modelBuilder.Entity<Person>().HasData(
-               new Person() { Id = 2, Name = "Stefi Nicoara", DateOfBirth = new DateTime(1999, 01, 22), Email = "ntstefi@email.com", Gender = Gender.V, Shows = 0, NoShows = 0, AddressId = 2, });
+               new Person() { Id = 2, Name = "Stefi Nicoara", DateOfBirth = new DateTime(1999, 01, 22), Email = "ntstefi@email.com", Gender = Gender.V, Shows = 0, NoShows = 0, AddressId = 2, AlcoholFree = false, Vegan = true, NutAllergy = false, LactoseIntolerant = false });
 
             modelBuilder.Entity<Address>().HasData(
              new Address() { Id = 3, StreetName = "Teststraat", City = "Devtown", HouseNumber = 52, PostalCode = "4452SG" });
 
             modelBuilder.Entity<Person>().HasData(
-               new Person() { Id = 3, Name = "Piet Test", DateOfBirth = new DateTime(2000, 03, 20), Email = "piet@email.com", Gender = Gender.M, Shows = 0, NoShows = 0, AddressId = 3, });
+               new Person() { Id = 3, Name = "Piet Test", DateOfBirth = new DateTime(2000, 03, 20), Email = "piet@email.com", Gender = Gender.M, Shows = 0, NoShows = 0, AddressId = 3, AlcoholFree = true, Vegan = true, NutAllergy = true, LactoseIntolerant = true });
 
             modelBuilder.Entity<Game>().HasIndex(o => o.Name).IsUnique();
 
@@ -102,6 +102,12 @@ namespace Infrastructure
                 .WithMany(b => b.OrganisedGameNights)
                 .HasForeignKey(p => p.OrganiserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Game>()
+               .HasOne(b => b.GameImage)
+               .WithOne(i => i.Game)
+               .HasForeignKey<GameImage>(b => b.GameID)
+               .OnDelete(DeleteBehavior.NoAction);
 
 
             modelBuilder.Entity<GameNightPlayer>().HasData(

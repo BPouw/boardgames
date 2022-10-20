@@ -13,7 +13,12 @@ namespace portal.Models
             public int MaxPlayers { get; set; } 
             public int OrganiserId { get; set; }
             public Person Organiser { get; set; }
-            public ICollection<Person> Players { get; set; }
+
+            public Boolean Vegan { get; set; }
+              public Boolean LactoseIntolerant { get; set; }
+            public Boolean NutAllergy { get; set; }
+           public Boolean AlcoholFree { get; set; }
+        public ICollection<Person> Players { get; set; }
             public ICollection<Game> Games { get; set; }
 
 

@@ -23,6 +23,10 @@ namespace portal.Models
         public int OrganiserId { get; set; }
 
         public int[] GameIds { get; set; }
+        public Boolean Vegan { get; set; }
+        public Boolean LactoseIntolerant { get; set; }
+        public Boolean NutAllergy { get; set; }
+        public Boolean AlcoholFree { get; set; }
     }
 }
 

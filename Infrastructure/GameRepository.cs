@@ -1,6 +1,7 @@
 ﻿using System;
 using Core.Domain;
 using Core.DomainServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -25,8 +26,9 @@ namespace Infrastructure
 
         public Game GetById(int gameId)
         {
-            return _context.Game.SingleOrDefault(g => g.Id == gameId);
+            return _context.Game.Where(g => g.Id == gameId).Include(g => g.GameImage).First();
         }
+
     }
 }
 

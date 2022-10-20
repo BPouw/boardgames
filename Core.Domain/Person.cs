@@ -17,6 +17,10 @@ namespace Core.Domain
         public int AddressId { get; set; }
         public int NoShows { get; set; }
         public int Shows { get; set; }
+        public Boolean Vegan { get; set; }
+        public Boolean LactoseIntolerant { get; set; }
+        public Boolean NutAllergy { get; set; }
+        public Boolean AlcoholFree { get; set; }
         public ICollection<GameNight> GameNights { get; set; }
         public ICollection<GameNight> OrganisedGameNights { get; set; }
     }

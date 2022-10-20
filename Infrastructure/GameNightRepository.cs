@@ -27,7 +27,7 @@ namespace Infrastructure
 
         public GameNight getGameNightById(int id)
         {
-            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).First();
+            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).Include(g => g.Players).First();
         }
 
         public GameNight getGameNightPopulated(int id)

@@ -14,6 +14,8 @@ namespace Core.Domain
         public Genre genre { get; set; }
         public Boolean AdultsOnly { get; set; }
         public Category category { get; set; }
+        public GameImage GameImage { get; set; }
+        public int? GameImageId { get; set; }
         public ICollection<GameNight> GameNights { get; set;}
 
     }

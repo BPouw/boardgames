@@ -31,9 +31,13 @@ namespace portal.Models
                 AdultsOnly = gameNight.AdultsOnly,
                 Address = gameNight.Address,
                 Players = gameNight.Players,
-                Games = gameNight.Games
+                Games = gameNight.Games,
+                Vegan = gameNight.Vegan,
+                 LactoseIntolerant = gameNight.LactoseIntolerant,
+                NutAllergy = gameNight.NutAllergy,
+                  AlcoholFree = gameNight.AlcoholFree
 
-            };
+    };
             return result;
         }
 
@@ -85,6 +89,26 @@ namespace portal.Models
 
             return result;
         }
+
+        public static GameViewModel ToViewModel(this Game e)
+        {
+            var result = new GameViewModel
+            {
+                Name = e.Name,
+                genre = e.genre,
+                category = e.category,
+                Description = e.Description,
+                AdultsOnly = e.AdultsOnly,
+                GameImage = e.GameImage,
+                Picture = Convert.ToBase64String(e.GameImage.Picture),
+                PictureFormat = e.GameImage.PictureFormat
+            };
+
+            return result;
+        }
+
+
+
     }
 }
 

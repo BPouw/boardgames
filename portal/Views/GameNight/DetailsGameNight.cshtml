@@ -12,7 +12,7 @@
             <div class="card p-4">
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
-                        <img src="../assets/brand/gamenight-detail.jpg" alt="gamenight picture" class="rounded" width="100%">
+                        <img src="~/pictures/gamenight.jpg" alt="gamenight picture" class="rounded" width="100%">
                         <div class="mt-4">
                             <h4>@Model.Name</h4>
                             <p class="text-secondary">@Model.DateTime</p>
@@ -68,6 +68,15 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
+                            <h6 class="mb-0 ">Maximum players</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.MaxPlayers
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
                             <h6 class="mb-0 ">Games</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
@@ -102,7 +111,21 @@
                             <h6 class="mb-0 ">Food allergies</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            food1 &nbsp; food2 &nbsp; food3
+                            @if (@Model.Vegan) {
+                                <span>Vegan</span>
+                            }
+                            @if (@Model.LactoseIntolerant)
+                            {
+                                <span>Lactose intolerant</span>
+                            }
+                            @if (@Model.AlcoholFree)
+                            {
+                                    <span>AlcoholFree</span>
+                            }
+                            @if (@Model.NutAllergy)
+                            {
+                                <span>Nut allergy</span>
+                            }
                         </div>
                     </div>
                     </div>

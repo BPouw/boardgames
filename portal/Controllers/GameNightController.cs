@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using portal.Models;
 
 namespace portal.Controllers
@@ -45,7 +46,6 @@ namespace portal.Controllers
 
         public IActionResult Index()
         {
-            _toastNotification.Success("A success toast that will last for 10 seconds.", 10);
             return View(_gameNightRepository.getGameNights().ToViewModel());
         }
 
@@ -79,17 +79,17 @@ namespace portal.Controllers
                     GameNightToCreate.Name = newGameNight.Name;
                     GameNightToCreate.DateTime = newGameNight.GameTime;
                     GameNightToCreate.AdultsOnly = newGameNight.AdultsOnly;
-
+                    GameNightToCreate.Vegan = newGameNight.Vegan;
+                    GameNightToCreate.LactoseIntolerant = newGameNight.LactoseIntolerant;
+                    GameNightToCreate.NutAllergy = newGameNight.NutAllergy;
+                    GameNightToCreate.AlcoholFree = newGameNight.AlcoholFree;
                     GameNightToCreate.AddressId = person.AddressId; 
                     GameNightToCreate.OrganiserId = person.Id;
 
                     // create gamenight
                     await _gameNightRepository.AddGameNight(GameNightToCreate);
 
-                    int[] annoying = newGameNight.GameIds;
-
-                    // add the games to the night
-                    //await _gameNightGameRepository.AddManyGamesToGameNight(annoying, GameNightToCreate.Id);
+                    await _gameNightGameRepository.AddManyGamesToGameNight(newGameNight.GameIds, GameNightToCreate.Id);
 
                     GameNightPlayer organiser = new GameNightPlayer();
                     organiser.GameNightId = GameNightToCreate.Id;
@@ -136,20 +136,49 @@ namespace portal.Controllers
                 // gooi een too young error op de UI
                 _toastNotification.Warning("You are too young to join this gamenight", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-            } else
+            } 
+
+            if (gameNight.MaxPlayers == gameNight.Players.Count())
             {
-                try
-                {
-                    await this._gameNightPlayerRepository.AddPlayer(player);
-                } catch (Exception e)
-                {
-                    _toastNotification.Warning("You have already joined this gamenight", 10);
-                }
-
-                _toastNotification.Success("You joined this gamenight", 10);
-
+                _toastNotification.Warning("This gamenight is full", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             }
+
+//           if (person.AlcoholFree  || person.NutAllergy || person.Vegan || person.LactoseIntolerant)
+            
+            if (person.AlcoholFree && !gameNight.AlcoholFree)
+            {
+                _toastNotification.Warning("This gamenight will have alcohol", 10);
+            }
+
+            if (person.NutAllergy && !gameNight.NutAllergy)
+            {
+                _toastNotification.Warning("This gamenight contains nuts", 10);
+            }
+
+            if (person.Vegan && !gameNight.Vegan)
+            {
+                _toastNotification.Warning("This gamenight will not be vegan", 10);
+            }
+
+            if (person.LactoseIntolerant && !gameNight.LactoseIntolerant)
+            {
+                _toastNotification.Warning("This gamenight will have lactose", 10);
+            }
+
+
+            try
+            {
+               await this._gameNightPlayerRepository.AddPlayer(player);
+            } catch (Exception e)
+            {
+               _toastNotification.Warning("You have already joined this gamenight", 10);
+            }
+
+            _toastNotification.Success("You joined this gamenight", 10);
+
+            return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+
         }
 
         public async Task<IActionResult> LeaveGameNight()
