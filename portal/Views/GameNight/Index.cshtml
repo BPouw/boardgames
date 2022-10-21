@@ -59,8 +59,8 @@
                         <h3>All GameNights:</h3>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-lg-10">
+                        <div class="row" >
+                            <div class="col-12 col-lg-12">
                                 <div class="table-responsive" tabindex="2">
                                     <table class="table table-striped">
                                         <thead>
@@ -70,7 +70,7 @@
                                                 <th>Date</th>
                                                 <th>Adults / Family</th>
                                                 <th>Details</th>
-                                                <th>Dietary hardcoded</th>
+                                                <th>Diet</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,8 +85,8 @@
                                                 @foreach (var r in Model)
                                                 {
                                                     <tr>
-                                                        <td class="user-icon">
-                                                            <i class="fa-duotone fa-user-crown"></i> @r.Organiser.Name
+                                                        <td>
+                                                            @r.Organiser.Name
                                                         </td>
                                                         <td class="w-25">
                                                             @r.Name

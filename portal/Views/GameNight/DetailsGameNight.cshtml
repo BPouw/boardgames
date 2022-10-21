@@ -52,7 +52,7 @@
                             <h6 class="mb-0 ">Address</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @Model.Address.StreetName @Model.Address.HouseNumber , @Model.Address.City
+                            @Model.Address.ToString()
                         </div>
                     </div>
                     <hr>
@@ -61,10 +61,7 @@
                             <h6 class="mb-0 ">Players</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @foreach (var player in Model.Players)
-                            {
-                                @player.Name 
-                            }
+                            @Model.Players.Count
                         </div>
                     </div>
                     <hr>
@@ -110,7 +107,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0 ">Food allergies</h6>
+                            <h6 class="mb-0 ">Diet</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
                             @if (@Model.Vegan)

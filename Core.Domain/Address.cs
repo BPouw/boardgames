@@ -15,5 +15,10 @@ namespace Core.Domain
         public string PostalCode { get; set; }
         public ICollection<Person> Persons { get; set; }
         public ICollection<GameNight> GameNights { get; set; }
+
+        public override string ToString()
+        {
+            return StreetName + " " + HouseNumber + ", " + PostalCode + " " + City;
+        }
     }
 }
