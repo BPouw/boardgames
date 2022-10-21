@@ -109,17 +109,22 @@
                                                             </a>
                                                         </td>
                                                         <td class="text-truncate">
-                                                            <ul class="list-unstyled  mb-0">
-                                                                <li class="diets-allergies">
-                                                                    <i class="fa-regular fa-leaf-heart text-success"></i>
-                                                                </li>
-                                                                <li class="diets-allergies">
-                                                                    <i class="fa-solid fa-wine-glass text-danger"></i>
-                                                                </li>
-                                                                <li class="diets-allergies">
-                                                                    <i class="fa-regular fa-wheat text-warning"></i>
-                                                                </li>
-                                                            </ul>
+                                                            @if (@r.Vegan)
+                                                            {
+                                                                <i class="fa-solid fa-meat"></i>
+                                                            }
+                                                            @if (@r.LactoseIntolerant)
+                                                            {
+                                                                <i class="fa-solid fa-cow"></i>
+                                                            }
+                                                            @if (@r.AlcoholFree)
+                                                            {
+                                                                <i class="fa-solid fa-martini-glass-citrus"></i>
+                                                            }
+                                                            @if (@r.NutAllergy)
+                                                            {
+                                                                <i class="fa-regular fa-peanuts"></i>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 }

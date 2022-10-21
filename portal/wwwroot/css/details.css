@@ -19,6 +19,11 @@
     border-radius: .25rem;
 }
 
+img {
+    border-radius: 50%;
+    width: 200px;
+}
+
 hr {
     margin: 0.7rem 0;
 }

@@ -1,7 +1,7 @@
 ﻿
 <head>
     <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
-    <link rel="stylesheet" type="text/css" href="~/css/detail.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/details.css" />
 </head>
 
 <div class="container">
@@ -12,23 +12,25 @@
             <div class="card p-4">
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
-                        <img src="~/pictures/gamenight.jpg" alt="gamenight picture" class="rounded" width="100%">
+                        <img src="~/pictures/gamenight.png" alt="gamenight picture">
                         <div class="mt-4">
                             <h4>@Model.Name</h4>
                             <p class="text-secondary">@Model.DateTime</p>
                             @if (@ViewBag.PersonId == @Model.OrganiserId)
                             {
-                                    <div class="d-flex flex-row">
-                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class='fa-solid fa-pencil'></i> Edit</a>
-                                        <a class="btn btn-danger" asp-controller="gamenight" asp-action="Delete" asp-route-id="@Model.Id"><i class="fa-solid fa-trash"></i> Delete </a>
-                                    </div>
+                                <div class="d-flex flex-row justify-content-around">
+                                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id"><i class='fa-solid fa-pencil'></i> Edit</a>
+                                    <a class="btn btn-danger" asp-controller="gamenight" asp-action="Delete" asp-route-id="@Model.Id"><i class="fa-solid fa-trash"></i> Delete </a>
+                                </div>
                             }
                             else
-                            {
-                                <a class="btn btn-success" asp-controller="gamenight" asp-action="JoinGameNight"><i class="fa-solid fa-plus"></i> Join </a>
-                                <a class="btn btn-danger" asp-controller="gamenight" asp-action="LeaveGameNight"><i class="fa-solid fa-minus"></i> Leave </a>
-                            }
-                        </div>
+                            {     
+                                <div class="d-flex flex-row justify-content-around">
+                                    <a class="btn btn-success" asp-controller="gamenight" asp-action="JoinGameNight"><i class="fa-solid fa-plus"></i> Join </a>
+                                    <a class="btn btn-danger" asp-controller="gamenight" asp-action="LeaveGameNight"><i class="fa-solid fa-minus"></i> Leave </a>
+                                </div>
+                             }
+                         </div>
                     </div>
                 </div>
             </div>
@@ -111,20 +113,21 @@
                             <h6 class="mb-0 ">Food allergies</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @if (@Model.Vegan) {
-                                <span>Vegan</span>
+                            @if (@Model.Vegan)
+                            {
+                                <i class="fa-solid fa-meat"></i>
                             }
                             @if (@Model.LactoseIntolerant)
                             {
-                                <span>Lactose intolerant</span>
+                                <i class="fa-solid fa-cow"></i>
                             }
                             @if (@Model.AlcoholFree)
                             {
-                                    <span>AlcoholFree</span>
+                                <i class="fa-solid fa-martini-glass-citrus"></i>
                             }
                             @if (@Model.NutAllergy)
                             {
-                                <span>Nut allergy</span>
+                                <i class="fa-regular fa-peanuts"></i>
                             }
                         </div>
                     </div>
