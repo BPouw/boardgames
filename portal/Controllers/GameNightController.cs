@@ -77,6 +77,7 @@ namespace portal.Controllers
 
                 var GameNightToCreate = new GameNight();
 
+                // validate that the event is not in the past
                 if (_gameNightValidator.DateInPresent(newGameNight.GameTime))
                 {
                     Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
@@ -91,16 +92,30 @@ namespace portal.Controllers
                     GameNightToCreate.AddressId = person.AddressId; 
                     GameNightToCreate.OrganiserId = person.Id;
 
+                    // check for 18+ games
+                    foreach(int id in newGameNight.GameIds)
+                    {
+                       Game Game = _gameRepository.GetById(id);
+                       if (Game.AdultsOnly == true)
+                        {
+                            if (GameNightToCreate.AdultsOnly == false)
+                            {
+                                _toastNotification.Warning($"Your game night has been set to adults only because {Game.Name.ToLower()} is 18+", 10);
+                                GameNightToCreate.AdultsOnly = true;
+                            }
+                        } 
+                    }
+
                     // create gamenight
                     await _gameNightRepository.AddGameNight(GameNightToCreate);
 
+                    // add the games to the gamenight
                     await _gameNightGameRepository.AddManyGamesToGameNight(newGameNight.GameIds, GameNightToCreate.Id);
 
+                    // add the organiser to the gamenight 
                     GameNightPlayer organiser = new GameNightPlayer();
                     organiser.GameNightId = GameNightToCreate.Id;
                     organiser.PersonId = person.Id;
-
-                    // add the organiser to the gamenight 
                     await _gameNightPlayerRepository.AddPlayer(organiser);
 
                     return RedirectToAction("Index");
@@ -141,7 +156,13 @@ namespace portal.Controllers
                 // gooi een too young error op de UI
                 _toastNotification.Warning("You are too young to join this gamenight", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-            } 
+            }
+
+            if (_gameNightRepository.HasJoinedGameNightOnDay(person, gameNight.DateTime))
+            {
+                _toastNotification.Warning("You can not join two game nights on the same day", 10);
+                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+            }
 
             if (gameNight.MaxPlayers == gameNight.Players.Count())
             {
@@ -169,14 +190,13 @@ namespace portal.Controllers
                 _toastNotification.Warning("This gamenight will have lactose", 10);
             }
 
-
             try
             {
                await this._gameNightPlayerRepository.AddPlayer(player);
                 _toastNotification.Success("You joined this gamenight", 10);
             } catch (Exception e)
             {
-               _toastNotification.Warning("You have already joined this gamenight", 10);
+               _toastNotification.Error("You have already joined this gamenight", 10);
             }
 
             return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
@@ -198,10 +218,27 @@ namespace portal.Controllers
                 _toastNotification.Warning("You left this gamenight", 10);
         } catch (Exception e)
             {
-                _toastNotification.Warning("You are not a participant of this gamenight", 10);
+                _toastNotification.Error("You are not a participant of this gamenight", 10);
             }
 
             return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+        }
+
+        public async Task<IActionResult> DeleteGameNight()
+        {
+            int? id = HttpContext.Session.GetInt32("GameNightId");
+            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
+
+            if (gameNight.Players.Count > 1)
+            {
+                _toastNotification.Error("A game night can not be removed after players have joined", 10);
+                return RedirectToAction("Index");
+            }
+
+            await _gameNightRepository.DeleteGameNight(gameNight);
+
+            _toastNotification.Warning($"Game night {gameNight.Name.ToLower()} has been removed", 10);
+            return RedirectToAction("Index");
         }
 
 

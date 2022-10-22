@@ -1,0 +1,80 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+
+}
+
+<div class="text-danger" asp-validation-summary="All"></div>
+
+<form asp-action="Register" asp-controller="Account" method="post">
+
+    <div class="form-group">
+        <label asp-for="Name">Email:</label>
+        <div><span asp-validation-for="Name" class="text-danger"></span></div>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password">Password:</label>
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+        <input asp-for="Password" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfBirth">Name:</label>
+        <input class="form-control" asp-for="DateOfBirth" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfBirth">Date of birth:</label>
+        <input class="form-control" asp-for="DateOfBirth" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Gender">Gender:</label>
+        <input class="form-control" asp-for="Gender" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StreetName">Street name:</label>
+        <input class="form-control" asp-for="StreetName" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="HouseNumber">House number:</label>
+        <input class="form-control" asp-for="HouseNumber" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="City">City:</label>
+        <input class="form-control" asp-for="City" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PostalCode">Postal code:</label>
+        <input class="form-control" asp-for="PostalCode" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LactoseIntolerant">Lactose intolerant:</label>
+        <input type="checkbox" asp-for="LactoseIntolerant" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Vegan">Vegan:</label>
+        <input type="checkbox" asp-for="Vegan" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AlcoholFree">Alcohol free:</label>
+        <input type="checkbox" asp-for="AlcoholFree" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NutAllergy">Nut allergy:</label>
+        <input type="checkbox" asp-for="NutAllergy" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Register</button>
+
+</form>

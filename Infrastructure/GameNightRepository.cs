@@ -25,9 +25,10 @@ namespace Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteGameNight(GameNight gameNight)
+        public async Task DeleteGameNight(GameNight gameNight)
         {
-            throw new NotImplementedException();
+            _context.GameNight.Remove(gameNight);
+            await _context.SaveChangesAsync();
         }
 
         public GameNight getGameNightById(int id)
@@ -42,17 +43,26 @@ namespace Infrastructure
 
         public IEnumerable<GameNight> getGameNights()
         {
-            return _context.GameNight.Include(g => g.Games).Include(g => g.Organiser);
+            return _context.GameNight.Include(g => g.Games).Include(g => g.Organiser).OrderBy(g => g.DateTime);
         }
 
         public IEnumerable<GameNight> getGameNightsByOrganiser(int id)
         {
-            return _context.GameNight.Where(p => p.OrganiserId == id);
+            return _context.GameNight.Where(p => p.OrganiserId == id).OrderBy(g => g.DateTime);
         }
 
         public IEnumerable<GameNight> getJoinedGameNights(Person person)
         {
-            return _context.GameNight.Where(p => p.Players.Contains(person)).Include(g => g.Organiser);
+            return _context.GameNight.Where(p => p.Players.Contains(person)).Include(g => g.Organiser).OrderBy(g => g.DateTime);
+        }
+
+        public bool HasJoinedGameNightOnDay(Person person, DateTime date)
+        {
+            if (_context.GameNight.Count(p => p.Players.Contains(person) && p.DateTime.Date == date.Date) == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         public Task UpdateGameNight(GameNight gameNight)

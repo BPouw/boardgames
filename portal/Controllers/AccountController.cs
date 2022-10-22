@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
 using Infrastructure;
@@ -13,24 +14,21 @@ namespace portal.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private INotyfService _toastNotification;
         private IPersonRepository _personRepository;
 
         public AccountController(UserManager<IdentityUser> userMgr,
-            SignInManager<IdentityUser> signInMgr, IPersonRepository personRepository)
+            SignInManager<IdentityUser> signInMgr, INotyfService toastNotification, IPersonRepository personRepository)
         {
             userManager = userMgr;
             signInManager = signInMgr;
-            this._personRepository = personRepository;
             IdentitySeedData.EnsurePopulated(userMgr).Wait();
         }
 
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login()
         {
-            return View(new LoginViewModel
-            {
-                ReturnUrl = returnUrl
-            });
+            return View();
         }
 
         [HttpPost]
@@ -38,24 +36,48 @@ namespace portal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginModel)
         {
+
+            var user = await userManager.FindByNameAsync(loginModel.Name);
+
+            if (user != null)
+            {
+                await signInManager.SignOutAsync();
+                if ((await signInManager.PasswordSignInAsync(user,
+                    loginModel.Password, false, false)).Succeeded)
+                {
+                    return Redirect("/GameNight/Index");
+                }
+            }
+
+            ModelState.AddModelError("", "Invalid name or password");
+            return View(loginModel);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel loginModel)
+        {
      
-                var user =
-                    await userManager.FindByNameAsync(loginModel.Name);
+            var user = await userManager.FindByNameAsync(loginModel.Name);
 
             if (user != null)
                 {
-                Person person = _personRepository.GetPersonFromEmail(loginModel.Name);
-                HttpContext.Session.SetObject("LoggedInObject", person);
                 await signInManager.SignOutAsync();
                     if ((await signInManager.PasswordSignInAsync(user,
                         loginModel.Password, false, false)).Succeeded)
                     {
-                        return Redirect(loginModel?.ReturnUrl ?? "/GameNight/Index");
+                        return Redirect("/GameNight/Index");
                     }
                 }
 
             
-
             ModelState.AddModelError("", "Invalid name or password");
             return View(loginModel);
         }

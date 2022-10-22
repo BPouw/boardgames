@@ -17,5 +17,6 @@ namespace Core.DomainServices
         Task AddGameNight(GameNight gameNight);
         Task DeleteGameNight(GameNight gameNight);
         Task UpdateGameNight(GameNight gameNight);
+        bool HasJoinedGameNightOnDay(Person person, DateTime date);
     }
 }

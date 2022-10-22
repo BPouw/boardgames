@@ -19,11 +19,6 @@ namespace Infrastructure
             return _context.Game;
         }
 
-        public IEnumerable<Game> getAllChildFriendlyGames()
-        {
-            return _context.Game.Where(g => g.AdultsOnly == false);
-        }
-
         public Game GetById(int gameId)
         {
             return _context.Game.Where(g => g.Id == gameId).Include(g => g.GameImage).First();
