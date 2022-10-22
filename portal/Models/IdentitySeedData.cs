@@ -35,6 +35,7 @@ namespace portal.Models
                 user3 = new IdentityUser("piet@email.com");
                 await userManager.CreateAsync(user3, password);
             }
+
         }
     }
 

@@ -1,4 +1,74 @@
-﻿@Model.Name
+﻿<head>
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
+    <link rel="stylesheet" type="text/css" href="~/css/gamedetails.css" />
+</head>
 
-<img src="data:@Model.PictureFormat;base64,@Model.Picture" alt="gamenight picture" class="rounded"
-     width="100%">
+<div class="container">
+    <h1 class="mb-5">Details for @Model.Name</h1>
+    <div class="row gutters-sm mb-3">
+        <div class="col-md-4 mb-3">
+            <div class="card p-4">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <img src="data:@Model.PictureFormat;base64,@Model.Picture" alt="gamenight picture">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card p-4">
+                <div class="card-body py-2">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Game</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Name
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Description</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.Description
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Genre</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.genre
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Age rating</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @if(Model.AdultsOnly == true){
+                                    <span>18+</span>
+                                } else
+                                {
+                                    <span>All ages</span>
+                                }
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Category</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model.category
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

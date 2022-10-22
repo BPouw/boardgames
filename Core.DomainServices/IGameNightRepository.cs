@@ -9,10 +9,13 @@ namespace Core.DomainServices
 {
     public interface IGameNightRepository
     {
-        IQueryable<GameNight> getGameNights();
+        IEnumerable<GameNight> getGameNights();
         IEnumerable<GameNight> getGameNightsByOrganiser(int id);
-        Task AddGameNight(GameNight gameNight);
+        IEnumerable<GameNight> getJoinedGameNights(Person person);
         GameNight getGameNightById(int id);
         GameNight getGameNightPopulated(int id);
+        Task AddGameNight(GameNight gameNight);
+        Task DeleteGameNight(GameNight gameNight);
+        Task UpdateGameNight(GameNight gameNight);
     }
 }

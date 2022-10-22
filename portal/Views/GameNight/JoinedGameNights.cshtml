@@ -1,1 +1,111 @@
 ﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/" />
+
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
+
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css" />
+</head>
+
+<body>
+    <a class="btn btn-outline-success" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+            <div class="table-card card">
+                <div class="card-header">
+                    <h3>Joined game nights:</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-12">
+                            <div class="table-responsive" tabindex="2">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Organizer</th>
+                                            <th>Title</th>
+                                            <th>Date</th>
+                                            <th>Adults / Family</th>
+                                            <th>Details</th>
+                                            <th>Diet / Allergies</th>
+                                        </tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model == null)
+                                        {
+                                            <tr>
+                                                <td colspan="3" class="text-center">No GameNights found...</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var r in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @r.Organiser.Name
+                                                    </td>
+                                                    <td class="w-25">
+                                                        @r.Name
+                                                    </td>
+                                                    <td>
+                                                        @($"{@r.DateTime:dd-MM-yyyy HH:mm}")
+                                                    </td>
+
+                                                    @if (@r.AdultsOnly == true)
+                                                    {
+                                                        <td>Adults</td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>Family friendly</td>
+
+                                                    }
+                                                    <td>
+                                                        <a asp-controller="GameNight" asp-action="DetailsGameNight" asp-route-id="@r.Id" class="btn btn-primary">
+                                                            <i class="fa-regular fa-circle-info"></i> Detail page
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-truncate">
+                                                        @if (@r.Vegan)
+                                                        {
+                                                            <i class="fa-solid fa-meat"></i>
+                                                        }
+                                                        @if (@r.LactoseIntolerant)
+                                                        {
+                                                            <i class="fa-solid fa-cow"></i>
+                                                        }
+                                                        @if (@r.AlcoholFree)
+                                                        {
+                                                            <i class="fa-solid fa-martini-glass-citrus"></i>
+                                                        }
+                                                        @if (@r.NutAllergy)
+                                                        {
+                                                            <i class="fa-regular fa-peanuts"></i>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

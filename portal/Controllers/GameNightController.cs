@@ -51,9 +51,14 @@ namespace portal.Controllers
 
         public IActionResult JoinedGameNights()
         {
-            //ViewBag.Gamenights = _playersRepository.getGameNights();
-            //ViewBag.Players = _playersRepository.getAllPlayersFromGameNight();
-            return View();
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            return View(_gameNightRepository.getJoinedGameNights(person).ToViewModel());
+        }
+
+        public IActionResult HostedGameNights()
+        {
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            return View(_gameNightRepository.getGameNightsByOrganiser(person.Id).ToViewModel());
         }
 
         [HttpGet]
@@ -143,25 +148,23 @@ namespace portal.Controllers
                 _toastNotification.Warning("This gamenight is full", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             }
-
-//           if (person.AlcoholFree  || person.NutAllergy || person.Vegan || person.LactoseIntolerant)
             
-            if (person.AlcoholFree && !gameNight.AlcoholFree)
+            if (person.AlcoholFree && gameNight.AlcoholFree)
             {
                 _toastNotification.Warning("This gamenight will have alcohol", 10);
             }
 
-            if (person.NutAllergy && !gameNight.NutAllergy)
+            if (person.NutAllergy && gameNight.NutAllergy)
             {
                 _toastNotification.Warning("This gamenight contains nuts", 10);
             }
 
-            if (person.Vegan && !gameNight.Vegan)
+            if (person.Vegan && gameNight.Vegan)
             {
                 _toastNotification.Warning("This gamenight will not be vegan", 10);
             }
 
-            if (person.LactoseIntolerant && !gameNight.LactoseIntolerant)
+            if (person.LactoseIntolerant && gameNight.LactoseIntolerant)
             {
                 _toastNotification.Warning("This gamenight will have lactose", 10);
             }
@@ -170,12 +173,11 @@ namespace portal.Controllers
             try
             {
                await this._gameNightPlayerRepository.AddPlayer(player);
+                _toastNotification.Success("You joined this gamenight", 10);
             } catch (Exception e)
             {
                _toastNotification.Warning("You have already joined this gamenight", 10);
             }
-
-            _toastNotification.Success("You joined this gamenight", 10);
 
             return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
 
@@ -193,20 +195,13 @@ namespace portal.Controllers
             try
             {
                 await this._gameNightPlayerRepository.DeletePlayer(player);
-            } catch (Exception e)
+                _toastNotification.Warning("You left this gamenight", 10);
+        } catch (Exception e)
             {
                 _toastNotification.Warning("You are not a participant of this gamenight", 10);
             }
 
-            _toastNotification.Warning("You left this gamenight", 10);
-
             return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-        }
-
-        [HttpGet]
-        public IActionResult HostedGameNights()
-        {
-            return View();
         }
 
 

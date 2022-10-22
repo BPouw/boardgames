@@ -25,6 +25,11 @@ namespace Infrastructure
             await _context.SaveChangesAsync();
         }
 
+        public Task DeleteGameNight(GameNight gameNight)
+        {
+            throw new NotImplementedException();
+        }
+
         public GameNight getGameNightById(int id)
         {
             return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).Include(g => g.Players).First();
@@ -35,7 +40,7 @@ namespace Infrastructure
             return _context.GameNight.Where(p => p.Id == id).Include(g => g.Games).Include(g => g.Players).Include(g => g.Address).Include(g => g.Organiser).First();
         }
 
-        public IQueryable<GameNight> getGameNights()
+        public IEnumerable<GameNight> getGameNights()
         {
             return _context.GameNight.Include(g => g.Games).Include(g => g.Organiser);
         }
@@ -45,6 +50,14 @@ namespace Infrastructure
             return _context.GameNight.Where(p => p.OrganiserId == id);
         }
 
+        public IEnumerable<GameNight> getJoinedGameNights(Person person)
+        {
+            return _context.GameNight.Where(p => p.Players.Contains(person)).Include(g => g.Organiser);
+        }
 
+        public Task UpdateGameNight(GameNight gameNight)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

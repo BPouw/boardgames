@@ -21,6 +21,7 @@ namespace Infrastructure
 
         public async Task DeletePlayer(GameNightPlayer player)
         {
+            _context.ChangeTracker.Clear();
             _context.GameNight_Player.Remove(player);
             await _context.SaveChangesAsync();
         }

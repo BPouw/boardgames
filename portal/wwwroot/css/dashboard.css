@@ -201,6 +201,10 @@ tr {
     /* border-radius: 10px; */
 }
 
+.btn-outline-success {
+    margin: 20px;
+}
+
 /* Colors */
 .text-primary {
     color: #586DD6 !important;
