@@ -30,6 +30,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameNightGameRepository, GameNightGameRepository>();
 builder.Services.AddScoped<IPersonValidator, PersonValidator>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
 builder.Services.AddScoped<IGameNightPlayerRepository, GameNightPlayerRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

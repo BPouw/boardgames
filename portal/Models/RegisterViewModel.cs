@@ -10,13 +10,15 @@ namespace portal.Models
        public string Email { get; set; }
 
         [Required]
+        [UIHint("password")]
         public string Password { get; set; }
 
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public DateOnly DateOfBirth { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         public Gender Gender { get; set; }

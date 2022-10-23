@@ -13,6 +13,13 @@ namespace Infrastructure
             _context = context;
         }
 
+        public async Task CreatePerson(Person person)
+        {
+            _context.Person.Add(person);
+            await _context.SaveChangesAsync();
+
+        }
+
         public Person GetPersonFromEmail(string email)
         {
             return _context.Person.SingleOrDefault(p => p.Email == email);
