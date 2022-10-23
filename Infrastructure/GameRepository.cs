@@ -14,6 +14,11 @@ namespace Infrastructure
             this._context = context;
         }
 
+        public IEnumerable<Game> getAllFamilyGames()
+        {
+            return _context.Game.Where(g => g.AdultsOnly == false);
+        }
+
         public IEnumerable<Game> getAllGames()
         {
             return _context.Game;

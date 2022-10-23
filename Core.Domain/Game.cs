@@ -17,6 +17,5 @@ namespace Core.Domain
         public GameImage GameImage { get; set; }
         public int? GameImageId { get; set; }
         public ICollection<GameNight> GameNights { get; set;}
-
     }
 }

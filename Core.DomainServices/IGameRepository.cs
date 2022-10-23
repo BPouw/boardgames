@@ -7,6 +7,7 @@ namespace Core.DomainServices
     {
         IEnumerable<Game> getAllGames();
         Game GetById(int gameId);
+        IEnumerable<Game> getAllFamilyGames();
     }
 }
 

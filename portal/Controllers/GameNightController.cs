@@ -24,7 +24,6 @@ namespace portal.Controllers
         private IGameNightValidator _gameNightValidator;
         private IGameNightPlayerRepository _gameNightPlayerRepository;
         private readonly INotyfService _toastNotification;
-        private string PERSON_SESSION = "PersonObject";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
@@ -65,7 +64,20 @@ namespace portal.Controllers
         public IActionResult CreateGameNight()
         {
             var model = new NewGameNightViewModel();
-            PrefillSelectOptions();
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+
+            // don't show 18+ games when user is underage
+            if(_personValidator.CheckAge(person.DateOfBirth))
+            {
+                PrefillSelectOptions();
+                HttpContext.Session.SetString("Age", "Adult");
+                ViewBag.Age = "Adult";
+            } else
+            {
+                PrefillSelectOptionsFamily();
+                HttpContext.Session.SetString("Age", "Kid");
+            }
+
             return View();
         }
 
@@ -124,8 +136,16 @@ namespace portal.Controllers
                 ModelState.AddModelError("GameTime", "A game has to be in the future");
 
             }
+            string Age = HttpContext.Session.GetString("Age");
 
-            PrefillSelectOptions();
+            if (Age == "Adult")
+            {
+                PrefillSelectOptions();
+            } else
+            {
+                PrefillSelectOptionsFamily();
+            }
+
             return View(newGameNight);
 
         }
@@ -152,8 +172,8 @@ namespace portal.Controllers
             player.PersonId = person.Id;
             player.GameNightId = gameNight.Id;
 
+            // leeftijd validatie
             if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth)) {
-                // gooi een too young error op de UI
                 _toastNotification.Warning("You are too young to join this gamenight", 10);
                 return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
             }
@@ -245,6 +265,12 @@ namespace portal.Controllers
         private void PrefillSelectOptions()
         {
             var games = _gameRepository.getAllGames();
+            ViewBag.Games = new SelectList(games, "Id", "Name");
+        }
+
+        private void PrefillSelectOptionsFamily()
+        {
+            var games = _gameRepository.getAllFamilyGames();
             ViewBag.Games = new SelectList(games, "Id", "Name");
         }
 
