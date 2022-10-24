@@ -42,9 +42,11 @@
     <None Remove="SweetAlert" />
     <None Remove="AspNetCoreHero.ToastNotification" />
     <None Remove="NToastNotify" />
+    <None Remove="Views\Review\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\GameNight\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Review\" />
   </ItemGroup>
 </Project>

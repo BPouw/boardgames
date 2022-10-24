@@ -34,7 +34,7 @@ namespace portal.Models
                 Games = gameNight.Games,
                 Vegan = gameNight.Vegan,
                  LactoseIntolerant = gameNight.LactoseIntolerant,
-                NutAllergy = gameNight.NutAllergy,
+                NutAllergy = gameNight.NutAllergy, 
                   AlcoholFree = gameNight.AlcoholFree
 
     };
@@ -103,6 +103,41 @@ namespace portal.Models
                 Picture = Convert.ToBase64String(e.GameImage.Picture),
                 PictureFormat = e.GameImage.PictureFormat
             };
+
+            return result;
+        }
+
+        public static ReviewViewModel toViewModel(this Review e)
+        {
+            var result = new ReviewViewModel
+            {
+                Rating = e.Rating,
+                Reviewer = e.Reviewer,
+                ReviewText = e.ReviewText
+            };
+
+            return result;
+        }
+
+        public static PersonReviewViewModel ToViewModel(this PersonReview e)
+        {
+            var result = new PersonReviewViewModel
+            {
+                Person = e.Person,
+                Review = e.Review
+            };
+
+            return result;
+        }
+
+        public static List<PersonReviewViewModel> ToViewModel(this IEnumerable<PersonReview> personReviews)
+        {
+            var result = new List<PersonReviewViewModel>();
+
+            foreach (var personReview in personReviews)
+            {
+                result.Add(personReview.ToViewModel());
+            }
 
             return result;
         }

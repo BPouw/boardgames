@@ -254,7 +254,7 @@ namespace Infrastructure.Migrations
                             AddressId = 1,
                             AdultsOnly = false,
                             AlcoholFree = false,
-                            DateTime = new DateTime(2022, 10, 21, 9, 6, 45, 932, DateTimeKind.Local).AddTicks(3410),
+                            DateTime = new DateTime(2022, 10, 23, 14, 23, 34, 661, DateTimeKind.Local).AddTicks(590),
                             LactoseIntolerant = false,
                             MaxPlayers = 6,
                             Name = "MarioKart session",
@@ -268,7 +268,7 @@ namespace Infrastructure.Migrations
                             AddressId = 3,
                             AdultsOnly = true,
                             AlcoholFree = false,
-                            DateTime = new DateTime(2022, 10, 21, 9, 6, 45, 932, DateTimeKind.Local).AddTicks(3480),
+                            DateTime = new DateTime(2022, 10, 23, 14, 23, 34, 661, DateTimeKind.Local).AddTicks(640),
                             LactoseIntolerant = false,
                             MaxPlayers = 6,
                             Name = "Poker night",
@@ -363,14 +363,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NoShows")
-                        .HasColumnType("int");
-
                     b.Property<bool>("NutAllergy")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Shows")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Vegan")
                         .HasColumnType("bit");
@@ -392,9 +386,7 @@ namespace Infrastructure.Migrations
                             Gender = 0,
                             LactoseIntolerant = false,
                             Name = "Boris Pouw",
-                            NoShows = 0,
                             NutAllergy = true,
-                            Shows = 0,
                             Vegan = false
                         },
                         new
@@ -407,9 +399,7 @@ namespace Infrastructure.Migrations
                             Gender = 1,
                             LactoseIntolerant = false,
                             Name = "Stefi Nicoara",
-                            NoShows = 0,
                             NutAllergy = false,
-                            Shows = 0,
                             Vegan = true
                         },
                         new
@@ -422,11 +412,49 @@ namespace Infrastructure.Migrations
                             Gender = 0,
                             LactoseIntolerant = true,
                             Name = "Piet Test",
-                            NoShows = 0,
                             NutAllergy = true,
-                            Shows = 0,
                             Vegan = true
                         });
+                });
+
+            modelBuilder.Entity("Core.Domain.PersonReview", b =>
+                {
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("Person_Review");
+                });
+
+            modelBuilder.Entity("Core.Domain.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Core.Domain.GameImage", b =>
@@ -507,6 +535,36 @@ namespace Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("Core.Domain.PersonReview", b =>
+                {
+                    b.HasOne("Core.Domain.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Core.Domain.Review", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("Core.Domain.Review", b =>
+                {
+                    b.HasOne("Core.Domain.Person", "Reviewer")
+                        .WithMany("WrittenReviews")
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reviewer");
+                });
+
             modelBuilder.Entity("Core.Domain.Address", b =>
                 {
                     b.Navigation("GameNights");
@@ -523,6 +581,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Domain.Person", b =>
                 {
                     b.Navigation("OrganisedGameNights");
+
+                    b.Navigation("WrittenReviews");
                 });
 #pragma warning restore 612, 618
         }

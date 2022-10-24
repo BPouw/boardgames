@@ -1,0 +1,102 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/" />
+
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet" SameSite='Strict' />
+
+    <link rel="stylesheet" type="text/css" href="../css/dashboard.css" />
+</head>
+
+<body>
+    <a class="btn btn-outline-success" asp-controller="GameNight" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12">
+            <div class="table-card card">
+                <div class="card-header">
+                    <h3>Received reviews:</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-12">
+                            <div class="table-responsive" tabindex="2">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reviewer</th>
+                                            <th>Rating</th>
+                                            <th>Review</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model == null)
+                                        {
+                                            <tr>
+                                                <td colspan="3" class="text-center">No reviews yet...</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var r in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @r.Review.Reviewer.Name
+                                                    </td>
+                                                    <td class="w-25">
+                                                        @if (r.Review.Rating == 1)
+                                                        {
+                                                            <i class="fa-solid fa-star"></i>
+                                                        }
+                                                        @if (r.Review.Rating == 2)
+                                                        {
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                        }
+                                                        @if (r.Review.Rating == 3)
+                                                        {
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                        }
+                                                        @if (r.Review.Rating == 4)
+                                                        {
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                        }
+                                                        @if (r.Review.Rating == 5)
+                                                        {
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                            <i class="fa-solid fa-star"></i>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @r.Review.ReviewText
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

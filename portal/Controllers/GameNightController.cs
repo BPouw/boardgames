@@ -23,13 +23,14 @@ namespace portal.Controllers
         private IPersonValidator _personValidator;
         private IGameNightValidator _gameNightValidator;
         private IGameNightPlayerRepository _gameNightPlayerRepository;
+        private IPersonReviewRepository _personReviewRepository;
         private readonly INotyfService _toastNotification;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         public GameNightController(ILogger<GameNightController> logger, IGameNightRepository gameNightRepository, IHttpContextAccessor httpContextAccessor, IGameRepository gameRepository, IPersonRepository personRepository, IGameNightGameRepository gameListRepository,
-            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator, INotyfService toastNotification)
+            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator, IPersonReviewRepository personReviewRepository, INotyfService toastNotification)
         {
             this._logger = logger;
             this._gameNightRepository = gameNightRepository;
@@ -40,11 +41,14 @@ namespace portal.Controllers
             this._personValidator = personValidator;
             this._gameNightValidator = gameNightValidator;
             this._gameNightPlayerRepository = playerRepository;
+            this._personReviewRepository = personReviewRepository;
             this._toastNotification = toastNotification;
         }
 
         public IActionResult Index()
         {
+            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            HttpContext.Session.SetInt32("LoggedInPersonId", person.Id);
             return View(_gameNightRepository.getGameNights().ToViewModel());
         }
 
@@ -154,11 +158,24 @@ namespace portal.Controllers
         public IActionResult DetailsGameNight(int id)
         {
             GameNight gameNight = _gameNightRepository.getGameNightPopulated(id);
-            HttpContext.Session.SetInt32("GameNightId", id);
-
             Person person = _personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            try
+            {
+                double doublescore = _personReviewRepository.AverageScoreForPerson(gameNight.OrganiserId);
+                ViewBag.AverageScore = Convert.ToInt32(doublescore);
+            } catch(Exception e)
+            {
+                ViewBag.AverageScore = 0;
+            }
+
+
+            HttpContext.Session.SetInt32("GameNightId", id);
+            HttpContext.Session.SetInt32("ReviewerId", person.Id);
+            HttpContext.Session.SetInt32("OrganiserId", gameNight.OrganiserId);
+
 
             ViewBag.PersonId = person.Id;
+
 
             return View(gameNight.ToViewModel());
         }
@@ -273,6 +290,7 @@ namespace portal.Controllers
             var games = _gameRepository.getAllFamilyGames();
             ViewBag.Games = new SelectList(games, "Id", "Name");
         }
+
 
     }
 }

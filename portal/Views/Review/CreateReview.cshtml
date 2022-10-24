@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Post review";
+}
+
+@model CreateReviewViewModel
+
+
+    <head>
+        <link href="~/css/review.css" rel="stylesheet" />
+    </head>
+
+<h1>Post review</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Review" asp-action="CreateReview" method="post">
+
+            <div class="form-group">
+                <label asp-for="ReviewText" class="control-label"></label>
+                <input asp-for="ReviewText" class="form-control" />
+                <span asp-validation-for="ReviewText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input type="number" asp-for="Rating" min="1" max="5">
+            </div>
+
+            <div class="form-group row">
+                <button class="btn btn-primary col-sm-4 text-center">Add review</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+

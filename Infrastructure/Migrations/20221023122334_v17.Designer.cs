@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BoardgamesContext))]
-    [Migration("20221019141418_v3")]
-    partial class v3
+    [Migration("20221023122334_v17")]
+    partial class v17
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,6 +93,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GameImageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -108,7 +111,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Games");
+                    b.ToTable("Game");
 
                     b.HasData(
                         new
@@ -167,6 +170,38 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Domain.GameImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("GameID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Picture")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PictureFormat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameID")
+                        .IsUnique()
+                        .HasFilter("[GameID] IS NOT NULL");
+
+                    b.ToTable("GameImage");
+                });
+
             modelBuilder.Entity("Core.Domain.GameNight", b =>
                 {
                     b.Property<int>("Id")
@@ -181,8 +216,14 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("AdultsOnly")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("AlcoholFree")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("LactoseIntolerant")
+                        .HasColumnType("bit");
 
                     b.Property<int>("MaxPlayers")
                         .HasColumnType("int");
@@ -191,8 +232,14 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("NutAllergy")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrganiserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Vegan")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -208,20 +255,28 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             AddressId = 1,
                             AdultsOnly = false,
-                            DateTime = new DateTime(2022, 10, 19, 16, 14, 18, 21, DateTimeKind.Local).AddTicks(6960),
+                            AlcoholFree = false,
+                            DateTime = new DateTime(2022, 10, 23, 14, 23, 34, 661, DateTimeKind.Local).AddTicks(590),
+                            LactoseIntolerant = false,
                             MaxPlayers = 6,
                             Name = "MarioKart session",
-                            OrganiserId = 1
+                            NutAllergy = false,
+                            OrganiserId = 1,
+                            Vegan = false
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 3,
                             AdultsOnly = true,
-                            DateTime = new DateTime(2022, 10, 19, 16, 14, 18, 21, DateTimeKind.Local).AddTicks(7020),
+                            AlcoholFree = false,
+                            DateTime = new DateTime(2022, 10, 23, 14, 23, 34, 661, DateTimeKind.Local).AddTicks(640),
+                            LactoseIntolerant = false,
                             MaxPlayers = 6,
                             Name = "Poker night",
-                            OrganiserId = 2
+                            NutAllergy = false,
+                            OrganiserId = 2,
+                            Vegan = false
                         });
                 });
 
@@ -290,6 +345,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("AlcoholFree")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -300,15 +358,18 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<bool>("LactoseIntolerant")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NoShows")
-                        .HasColumnType("int");
+                    b.Property<bool>("NutAllergy")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Shows")
-                        .HasColumnType("int");
+                    b.Property<bool>("Vegan")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -321,35 +382,91 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
+                            AlcoholFree = false,
                             DateOfBirth = new DateTime(1998, 7, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "boris@email.com",
                             Gender = 0,
+                            LactoseIntolerant = false,
                             Name = "Boris Pouw",
-                            NoShows = 0,
-                            Shows = 0
+                            NutAllergy = true,
+                            Vegan = false
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 2,
+                            AlcoholFree = false,
                             DateOfBirth = new DateTime(1999, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ntstefi@email.com",
                             Gender = 1,
+                            LactoseIntolerant = false,
                             Name = "Stefi Nicoara",
-                            NoShows = 0,
-                            Shows = 0
+                            NutAllergy = false,
+                            Vegan = true
                         },
                         new
                         {
                             Id = 3,
                             AddressId = 3,
+                            AlcoholFree = true,
                             DateOfBirth = new DateTime(2000, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "piet@email.com",
                             Gender = 0,
+                            LactoseIntolerant = true,
                             Name = "Piet Test",
-                            NoShows = 0,
-                            Shows = 0
+                            NutAllergy = true,
+                            Vegan = true
                         });
+                });
+
+            modelBuilder.Entity("Core.Domain.PersonReview", b =>
+                {
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("Person_Review");
+                });
+
+            modelBuilder.Entity("Core.Domain.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("Review");
+                });
+
+            modelBuilder.Entity("Core.Domain.GameImage", b =>
+                {
+                    b.HasOne("Core.Domain.Game", "Game")
+                        .WithOne("GameImage")
+                        .HasForeignKey("Core.Domain.GameImage", "GameID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Core.Domain.GameNight", b =>
@@ -420,6 +537,36 @@ namespace Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("Core.Domain.PersonReview", b =>
+                {
+                    b.HasOne("Core.Domain.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Core.Domain.Review", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("Core.Domain.Review", b =>
+                {
+                    b.HasOne("Core.Domain.Person", "Reviewer")
+                        .WithMany("WrittenReviews")
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reviewer");
+                });
+
             modelBuilder.Entity("Core.Domain.Address", b =>
                 {
                     b.Navigation("GameNights");
@@ -427,9 +574,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Persons");
                 });
 
+            modelBuilder.Entity("Core.Domain.Game", b =>
+                {
+                    b.Navigation("GameImage")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Domain.Person", b =>
                 {
                     b.Navigation("OrganisedGameNights");
+
+                    b.Navigation("WrittenReviews");
                 });
 #pragma warning restore 612, 618
         }

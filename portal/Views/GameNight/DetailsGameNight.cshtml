@@ -39,7 +39,49 @@
                             <h6 class="mb-0 ">Organiser</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @Model.Organiser.Name
+                               @Model.Organiser.Name
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Average score</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @if (ViewBag.AverageScore == 0)
+                            {
+                                <span>No reviews yet</span>
+                            }
+                            @if (@ViewBag.AverageScore == 1)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            @if (@ViewBag.AverageScore == 2)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            @if (@ViewBag.AverageScore == 3)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            @if (@ViewBag.AverageScore == 4)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            @if (@ViewBag.AverageScore == 5)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            }
                         </div>
                     </div>
                     <hr>
@@ -124,7 +166,18 @@
                             }
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0 ">Review</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <a asp-controller="Review" asp-action="CreateReview" class="btn btn-success">
+                                <i class="fa-solid fa-star-sharp-half-stroke"></i> Review
+                            </a>
+                        </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
