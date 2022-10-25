@@ -28,11 +28,13 @@
     <None Remove="IService\" />
     <None Remove="Service\" />
     <None Remove="Validator\" />
+    <None Remove="IValidator\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IRepo\" />
     <Folder Include="IService\" />
     <Folder Include="Service\" />
     <Folder Include="Validator\" />
+    <Folder Include="IValidator\" />
   </ItemGroup>
 </Project>

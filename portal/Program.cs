@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Security;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using Core.DomainServices.IService;
+using Core.DomainServices.Service;
+using Core.DomainServices.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 var securityString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -25,17 +28,22 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// repos oldschool
 builder.Services.AddScoped<IGameNightRepository, GameNightRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameNightGameRepository, GameNightGameRepository>();
 builder.Services.AddScoped<IPersonValidator, PersonValidator>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
-builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
 builder.Services.AddScoped<IGameNightPlayerRepository, GameNightPlayerRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPersonReviewRepository, PersonReviewRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+// services hip en modern
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IGameNightService, GameNightService>();
+builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
 
 builder.Services.AddSession();
 

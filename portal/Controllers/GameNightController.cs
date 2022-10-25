@@ -2,6 +2,8 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
+using Core.DomainServices.IService;
+using Core.DomainServices.Service;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,21 +19,26 @@ namespace portal.Controllers
     public class GameNightController : Controller
     {
         private readonly ILogger<GameNightController> _logger;
+
+        // ew ew repo's
         private IGameNightRepository _gameNightRepository;
         private IGameRepository _gameRepository;
         private IPersonRepository _personRepository;
         private IGameNightGameRepository _gameNightGameRepository;
         private IPersonValidator _personValidator;
-        private IGameNightValidator _gameNightValidator;
         private IGameNightPlayerRepository _gameNightPlayerRepository;
         private IPersonReviewRepository _personReviewRepository;
         private readonly INotyfService _toastNotification;
+
+        // wow wow services
+        private IPersonService _personService;
+        private IGameNightService _gameNightService;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         public GameNightController(ILogger<GameNightController> logger, IGameNightRepository gameNightRepository, IHttpContextAccessor httpContextAccessor, IGameRepository gameRepository, IPersonRepository personRepository, IGameNightGameRepository gameListRepository,
-            IGameNightValidator gameNightValidator, IGameNightPlayerRepository playerRepository, IPersonValidator personValidator, IPersonReviewRepository personReviewRepository, INotyfService toastNotification)
+             IGameNightPlayerRepository playerRepository, IPersonValidator personValidator, IPersonReviewRepository personReviewRepository, INotyfService toastNotification, IPersonService personService, IGameNightService gameNightService)
         {
             this._logger = logger;
             this._gameNightRepository = gameNightRepository;
@@ -40,28 +47,48 @@ namespace portal.Controllers
             this._personRepository = personRepository;
             this._gameNightGameRepository = gameListRepository;
             this._personValidator = personValidator;
-            this._gameNightValidator = gameNightValidator;
             this._gameNightPlayerRepository = playerRepository;
             this._personReviewRepository = personReviewRepository;
             this._toastNotification = toastNotification;
+
+            this._personService = personService;
+            this._gameNightService = gameNightService;
         }
 
         public IActionResult Index()
         {
-            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            try
+            {
+                Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
+                
             HttpContext.Session.SetInt32("LoggedInPersonId", person.Id);
             return View(_gameNightRepository.getGameNights().ToViewModel());
+            } catch (DomainException d)
+            {
+                _toastNotification.Error(d.Message, 10);
+                return RedirectToAction("Login", "Account");
+            } 
         }
 
         public IActionResult JoinedGameNights()
         {
-            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
-            return View(_gameNightRepository.getJoinedGameNights(person).ToViewModel());
+            try
+            {
+                Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
+
+                HttpContext.Session.SetInt32("LoggedInPersonId", person.Id);
+                return View(_gameNightRepository.getJoinedGameNights(person).ToViewModel());
+            }
+            catch (DomainException d)
+            {
+                _toastNotification.Error(d.Message, 10);
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         public IActionResult HostedGameNights()
         {
-            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
             bool is18 = _personValidator.CheckAge(person.DateOfBirth);
             ViewBag.PersonAge = is18;
             return View(_gameNightRepository.getGameNightsByOrganiser(person.Id).ToViewModel());
@@ -81,64 +108,47 @@ namespace portal.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var GameNightToCreate = new GameNight();
 
-                // validate that the event is not in the past
-                if (_gameNightValidator.DateInPresent(newGameNight.GameTime))
-                {
-                    Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
-                    GameNightToCreate.MaxPlayers = newGameNight.MaxPlayers;
-                    GameNightToCreate.Name = newGameNight.Name;
-                    GameNightToCreate.DateTime = newGameNight.GameTime;
-                    GameNightToCreate.AdultsOnly = newGameNight.AdultsOnly;
-                    GameNightToCreate.Vegan = newGameNight.Vegan;
-                    GameNightToCreate.LactoseIntolerant = newGameNight.LactoseIntolerant;
-                    GameNightToCreate.NutAllergy = newGameNight.NutAllergy;
-                    GameNightToCreate.AlcoholFree = newGameNight.AlcoholFree;
-                    GameNightToCreate.AddressId = person.AddressId; 
-                    GameNightToCreate.OrganiserId = person.Id;
+                Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+                GameNightToCreate.MaxPlayers = newGameNight.MaxPlayers;
+                GameNightToCreate.Name = newGameNight.Name;
+                GameNightToCreate.DateTime = newGameNight.GameTime;
+                GameNightToCreate.AdultsOnly = newGameNight.AdultsOnly;
+                GameNightToCreate.Vegan = newGameNight.Vegan;
+                GameNightToCreate.LactoseIntolerant = newGameNight.LactoseIntolerant;
+                GameNightToCreate.NutAllergy = newGameNight.NutAllergy;
+                GameNightToCreate.AlcoholFree = newGameNight.AlcoholFree;
+                GameNightToCreate.AddressId = person.AddressId;
+                GameNightToCreate.OrganiserId = person.Id;
 
-                    // check for 18+ games
-                    foreach(int id in newGameNight.GameIds)
+                try
+                {
+                    List<string> warnings = _gameNightService.CreateGameNight(GameNightToCreate, newGameNight.GameIds, person.Id);
+                    foreach (string s in warnings)
                     {
-                       Game Game = _gameRepository.GetById(id);
-                       if (Game.AdultsOnly == true)
-                        {
-                            if (GameNightToCreate.AdultsOnly == false)
-                            {
-                                _toastNotification.Warning($"Your game night has been set to adults only because {Game.Name.ToLower()} is 18+", 10);
-                                GameNightToCreate.AdultsOnly = true;
-                            }
-                        } 
+                        _toastNotification.Warning(s, 10);
                     }
 
-                    // create gamenight
-                    await _gameNightRepository.AddGameNight(GameNightToCreate);
-
-                    // add the games to the gamenight
-                    await _gameNightGameRepository.AddManyGamesToGameNight(newGameNight.GameIds, GameNightToCreate.Id);
-
-                    // add the organiser to the gamenight 
-                    GameNightPlayer organiser = new GameNightPlayer();
-                    organiser.GameNightId = GameNightToCreate.Id;
-                    organiser.PersonId = person.Id;
-                    await _gameNightPlayerRepository.AddPlayer(organiser);
+                    _toastNotification.Success("You have created a new game night!");
 
                     return RedirectToAction("Index");
+
+                } catch(DomainException e)
+                {
+                    _toastNotification.Error(e.Message, 10);
+                    PrefillSelectOptions();
+                    return View(newGameNight);
                 }
 
-                ModelState.AddModelError("GameTime", "A game has to be in the future");
+               
+             }
 
-            }
-            string Age = HttpContext.Session.GetString("Age");
-
-                PrefillSelectOptions();
-
-
+            PrefillSelectOptions();
             return View(newGameNight);
 
         }
+
 
         [HttpGet]
         public IActionResult DetailsGameNight(int id)
@@ -170,97 +180,66 @@ namespace portal.Controllers
         {
             GameNightPlayer player = new GameNightPlayer();
             int? id = HttpContext.Session.GetInt32("GameNightId");
-            Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
-            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
-            player.PersonId = person.Id;
-            player.GameNightId = gameNight.Id;
-
-            // leeftijd validatie
-            if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth)) {
-                _toastNotification.Warning("You are too young to join this gamenight", 10);
-                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-            }
-
-            if (_gameNightRepository.HasJoinedGameNightOnDay(person, gameNight.DateTime))
-            {
-                _toastNotification.Warning("You can not join two game nights on the same day", 10);
-                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-            }
-
-            if (gameNight.MaxPlayers == gameNight.Players.Count())
-            {
-                _toastNotification.Warning("This gamenight is full", 10);
-                return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
-            }
-            
-            if (person.AlcoholFree && gameNight.AlcoholFree)
-            {
-                _toastNotification.Warning("This gamenight will have alcohol", 10);
-            }
-
-            if (person.NutAllergy && gameNight.NutAllergy)
-            {
-                _toastNotification.Warning("This gamenight contains nuts", 10);
-            }
-
-            if (person.Vegan && gameNight.Vegan)
-            {
-                _toastNotification.Warning("This gamenight will not be vegan", 10);
-            }
-
-            if (person.LactoseIntolerant && gameNight.LactoseIntolerant)
-            {
-                _toastNotification.Warning("This gamenight will have lactose", 10);
-            }
-
             try
             {
-               await this._gameNightPlayerRepository.AddPlayer(player);
-                _toastNotification.Success("You joined this gamenight", 10);
-            } catch (Exception e)
-            {
-               _toastNotification.Error("You have already joined this gamenight", 10);
-            }
+                Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
+                try
+                {
+                    List<string> warnings = _gameNightService.JoinGameNight((int)id, person);
 
-            return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+                    foreach (string s in warnings)
+                    {
+                        _toastNotification.Warning(s, 10);
+                    }
+
+                    _toastNotification.Success("You have joined this gamenight");
+                    return RedirectToAction("DetailsGameNight", new { id = id });
+                }
+                catch (DomainException e)
+                {
+                    _toastNotification.Error(e.Message, 10);
+                    return RedirectToAction("DetailsGameNight", new { id = id });
+                }
+            }
+            catch (DomainException d)
+            {
+                _toastNotification.Error(d.Message, 10);
+                return RedirectToAction("Login", "Account");
+            }
 
         }
 
         public async Task<IActionResult> LeaveGameNight()
         {
-            GameNightPlayer player = new GameNightPlayer();
             int? id = HttpContext.Session.GetInt32("GameNightId");
             Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
-            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
-            player.PersonId = person.Id;
-            player.GameNightId = gameNight.Id;
 
             try
             {
-                await this._gameNightPlayerRepository.DeletePlayer(player);
-                _toastNotification.Warning("You left this gamenight", 10);
-        } catch (Exception e)
-            {
-                _toastNotification.Error("You are not a participant of this gamenight", 10);
-            }
+                _gameNightService.LeaveGameNight((int)id, person);
+                _toastNotification.Success("You have left this game night", 10);
+                return RedirectToAction("DetailsGameNight", new { id = id });
 
-            return RedirectToAction("DetailsGameNight", new { id = gameNight.Id });
+            } catch(DomainException e)
+            {
+                _toastNotification.Error(e.Message, 10);
+            }
+            return RedirectToAction("DetailsGameNight", new { id = id });
+
         }
 
         public async Task<IActionResult> DeleteGameNight()
         {
             int? id = HttpContext.Session.GetInt32("GameNightId");
-            GameNight gameNight = _gameNightRepository.getGameNightById((int)id);
 
-            if (gameNight.Players.Count > 1)
+            List<string> warnings = _gameNightService.DeleteGameNight((int)id);
+
+            foreach(string warning in warnings)
             {
-                _toastNotification.Error("A game night can not be removed after players have joined", 10);
-                return RedirectToAction("Index");
+                _toastNotification.Warning(warning, 10);
             }
 
-            await _gameNightRepository.DeleteGameNight(gameNight);
-
-            _toastNotification.Warning($"Game night {gameNight.Name.ToLower()} has been removed", 10);
+            _toastNotification.Success("The game night has been removed", 10);
             return RedirectToAction("Index");
         }
 
@@ -305,22 +284,13 @@ namespace portal.Controllers
                 updatedGameNight.AddressId = originalNight.AddressId;
                 updatedGameNight.OrganiserId = originalNight.OrganiserId;
 
-                // check for 18+ games
-                foreach (int id in updatedViewModel.GameIds)
+                try
                 {
-                    Game Game = _gameRepository.GetById(id);
-                    if (Game.AdultsOnly == true)
-                    {
-                        if (updatedGameNight.AdultsOnly == false)
-                        {
-                            _toastNotification.Warning($"Your game night has been set to adults only because {Game.Name.ToLower()} is 18+", 10);
-                            updatedGameNight.AdultsOnly = true;
-                        }
-                    }
+                    _gameNightService.EditGameNight(updatedGameNight, updatedViewModel.GameIds);
+                } catch(DomainException e)
+                {
+                    _toastNotification.Error(e.Message, 10);
                 }
-
-                await _gameNightRepository.UpdateGameNight(updatedGameNight);
-                await _gameNightGameRepository.UpdateManyGamesToGameNight(updatedViewModel.GameIds, updatedGameNight.Id);
 
                 return RedirectToAction("DetailsGameNight", new { id = updatedGameNight.Id });
 

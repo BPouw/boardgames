@@ -1,9 +1,7 @@
 ﻿using System;
-using Core.DomainServices;
-
-namespace Infrastructure
+namespace Core.DomainServices.Validator
 {
-    public class GameNightValidator : IGameNightValidator
+    public class GameNightValidator: IGameNightValidator
     {
         public bool DateInPresent(DateTime date)
         {
@@ -13,6 +11,7 @@ namespace Infrastructure
             }
             return false;
         }
+
     }
 }
 
