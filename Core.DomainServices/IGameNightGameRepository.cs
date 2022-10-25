@@ -6,6 +6,7 @@ namespace Core.DomainServices
     {
         Task AddGameToGameNight(GameNightGame gameNightGame);
         Task AddManyGamesToGameNight(int[] GameNightGameId, int GameNightId);
+        Task UpdateManyGamesToGameNight(int[] GameNightGameId, int GameNightId);
     }
 }
 

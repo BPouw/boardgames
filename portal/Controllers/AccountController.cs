@@ -17,15 +17,17 @@ namespace portal.Controllers
         private INotyfService _toastNotification;
         private IPersonRepository _personRepository;
         private IAddressRepository _addressRepository;
+        private IPersonValidator _personValidator;
 
         public AccountController(UserManager<IdentityUser> userMgr,
-            SignInManager<IdentityUser> signInMgr, INotyfService toastNotification, IPersonRepository personRepository, IAddressRepository addressRepository)
+            SignInManager<IdentityUser> signInMgr, INotyfService toastNotification, IPersonRepository personRepository, IAddressRepository addressRepository, IPersonValidator personValidator)
         {
             userManager = userMgr;
             signInManager = signInMgr;
             _toastNotification = toastNotification;
             _personRepository = personRepository;
             _addressRepository = addressRepository;
+            _personValidator = personValidator;
             IdentitySeedData.EnsurePopulated(userMgr).Wait();
         }
 
@@ -76,6 +78,12 @@ namespace portal.Controllers
                 _toastNotification.Error("User already exists", 10);
                     return View();
                 }
+
+            if (!_personValidator.CheckAgeMinimumSixteen(loginModel.DateOfBirth))
+            {
+                _toastNotification.Error("You must be at least 16 years old", 10);
+                return View();
+            }
 
             if (ModelState.IsValid)
             {

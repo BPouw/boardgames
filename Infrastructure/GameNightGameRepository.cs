@@ -32,6 +32,24 @@ namespace Infrastructure
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateManyGamesToGameNight(int[] GameNightGameId, int GameNightId)
+        {
+
+            _context.GameNight_Game.RemoveRange(_context.GameNight_Game.Where(p => p.GameNightId == GameNightId));
+
+            //add all to database
+            foreach (int id in GameNightGameId)
+                {
+                    GameNightGame gameNightGame = new GameNightGame();
+                    gameNightGame.GameNightId = GameNightId;
+                    gameNightGame.GameId = id;
+                    _context.GameNight_Game.Add(gameNightGame);
+                }
+
+                await _context.SaveChangesAsync();
+
+        }
+
         public GameNightGame GetGameFromId(int id)
         {
             return _context.GameNight_Game.Where(g => g.GameId == id).First();

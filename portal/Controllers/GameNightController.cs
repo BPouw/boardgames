@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Differencing;
 using portal.Models;
 
 namespace portal.Controllers
@@ -279,6 +280,70 @@ namespace portal.Controllers
         }
 
 
+        public IActionResult EditGameNight(int id)
+        {
+            GameNight gameNight = _gameNightRepository.getGameNightPopulated(id);
+            EditGameNightViewModel edit = new EditGameNightViewModel();
+
+            edit.Id = gameNight.Id;
+            edit.Name = gameNight.Name;
+            edit.MaxPlayers = gameNight.MaxPlayers;
+            edit.AdultsOnly = gameNight.AdultsOnly;
+            edit.AlcoholFree = gameNight.AlcoholFree;
+            edit.LactoseIntolerant = gameNight.LactoseIntolerant;
+            edit.NutAllergy = gameNight.NutAllergy;
+            edit.Vegan = gameNight.Vegan;
+            edit.GameTime = gameNight.DateTime;
+
+            PrefillSelectOptions();
+
+            return View(edit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGameNight(EditGameNightViewModel updatedViewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                GameNight originalNight = _gameNightRepository.getGameNightPopulated(updatedViewModel.Id);
+                GameNight updatedGameNight = new GameNight();
+                updatedGameNight.Id = updatedViewModel.Id;
+                updatedGameNight.Name = updatedViewModel.Name;
+                updatedGameNight.MaxPlayers = updatedViewModel.MaxPlayers;
+                updatedGameNight.AdultsOnly = updatedViewModel.AdultsOnly;
+                updatedGameNight.AlcoholFree = updatedViewModel.AlcoholFree;
+                updatedGameNight.LactoseIntolerant = updatedViewModel.LactoseIntolerant;
+                updatedGameNight.NutAllergy = updatedViewModel.NutAllergy;
+                updatedGameNight.Vegan = updatedViewModel.Vegan;
+                updatedGameNight.DateTime = updatedViewModel.GameTime;
+                updatedGameNight.AddressId = originalNight.AddressId;
+                updatedGameNight.OrganiserId = originalNight.OrganiserId;
+
+                // check for 18+ games
+                foreach (int id in updatedViewModel.GameIds)
+                {
+                    Game Game = _gameRepository.GetById(id);
+                    if (Game.AdultsOnly == true)
+                    {
+                        if (updatedGameNight.AdultsOnly == false)
+                        {
+                            _toastNotification.Warning($"Your game night has been set to adults only because {Game.Name.ToLower()} is 18+", 10);
+                            updatedGameNight.AdultsOnly = true;
+                        }
+                    }
+                }
+
+                await _gameNightRepository.UpdateGameNight(updatedGameNight);
+                await _gameNightGameRepository.UpdateManyGamesToGameNight(updatedViewModel.GameIds, updatedGameNight.Id);
+
+                return RedirectToAction("DetailsGameNight", new { id = updatedGameNight.Id });
+
+            }
+            PrefillSelectOptions();
+            return View();
+        }
+
         private void PrefillSelectOptions()
         {
             var games = _gameRepository.getAllGames();
@@ -290,7 +355,6 @@ namespace portal.Controllers
             var games = _gameRepository.getAllFamilyGames();
             ViewBag.Games = new SelectList(games, "Id", "Name");
         }
-
 
     }
 }

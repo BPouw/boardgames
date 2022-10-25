@@ -65,9 +65,11 @@ namespace Infrastructure
             return true;
         }
 
-        public Task UpdateGameNight(GameNight gameNight)
+        public async Task UpdateGameNight(GameNight gameNight)
         {
-            throw new NotImplementedException();
+            _context.ChangeTracker.Clear();
+            _context.GameNight.Update(gameNight);
+            await _context.SaveChangesAsync();
         }
     }
 }

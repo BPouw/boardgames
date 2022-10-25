@@ -15,6 +15,21 @@ namespace Infrastructure
             }
             return false;
         }
+
+        public bool CheckAgeMinimumSixteen(DateTime dateOfBirth)
+        {
+            DateTime date1 = DateTime.Today;
+            double age = Math.Floor((date1.Date - dateOfBirth.Date).Days / 365.25);
+
+            if (age >= 16)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 
