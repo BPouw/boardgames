@@ -17,95 +17,103 @@
 
 <body>
     <a class="btn btn-outline-success" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    <a class="btn btn-success" asp-controller="gamenight" asp-action="CreateGameNight"><i class="fa-solid fa-plus"></i> Create</a>
-    <div class="row">
-        <div class="col-12 col-sm-12 col-md-12">
-            <div class="table-card card">
-                <div class="card-header">
-                    <h3>Hosted game nights:</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-lg-12">
-                            <div class="table-responsive" tabindex="2">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Organizer</th>
-                                            <th>Title</th>
-                                            <th>Date</th>
-                                            <th>Adults / Family</th>
-                                            <th>Details</th>
-                                            <th>Diet / Allergies</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model == null)
-                                        {
+    @if (ViewBag.PersonAge == true)
+    {
+        <a class="btn btn-success" asp-controller="gamenight" asp-action="CreateGameNight"><i class="fa-solid fa-plus"></i> Create</a>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+                <div class="table-card card">
+                    <div class="card-header">
+                        <h3>Hosted game nights:</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <div class="table-responsive" tabindex="2">
+                                    <table class="table table-striped">
+                                        <thead>
                                             <tr>
-                                                <td colspan="3" class="text-center">No GameNights found...</td>
+                                                <th>Organizer</th>
+                                                <th>Title</th>
+                                                <th>Date</th>
+                                                <th>Adults / Family</th>
+                                                <th>Details</th>
+                                                <th>Diet / Allergies</th>
                                             </tr>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var r in Model)
+                                        </thead>
+                                        <tbody>
+                                            @if (Model == null)
                                             {
                                                 <tr>
-                                                    <td>
-                                                        @r.Organiser.Name
-                                                    </td>
-                                                    <td class="w-25">
-                                                        @r.Name
-                                                    </td>
-                                                    <td>
-                                                        @($"{@r.DateTime:dd-MM-yyyy HH:mm}")
-                                                    </td>
-
-                                                    @if (@r.AdultsOnly == true)
-                                                    {
-                                                        <td>Adults</td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>Family friendly</td>
-
-                                                    }
-                                                    <td>
-                                                        <a asp-controller="GameNight" asp-action="DetailsGameNight" asp-route-id="@r.Id" class="btn btn-primary">
-                                                            <i class="fa-regular fa-circle-info"></i> Detail page
-                                                        </a>
-                                                    </td>
-                                                    <td class="text-truncate">
-                                                        @if (@r.Vegan)
-                                                        {
-                                                            <i class="fa-solid fa-meat"></i>
-                                                        }
-                                                        @if (@r.LactoseIntolerant)
-                                                        {
-                                                            <i class="fa-solid fa-cow"></i>
-                                                        }
-                                                        @if (@r.AlcoholFree)
-                                                        {
-                                                            <i class="fa-solid fa-martini-glass-citrus"></i>
-                                                        }
-                                                        @if (@r.NutAllergy)
-                                                        {
-                                                            <i class="fa-regular fa-peanuts"></i>
-                                                        }
-                                                    </td>
+                                                    <td colspan="3" class="text-center">No GameNights found...</td>
                                                 </tr>
                                             }
-                                        }
-                                    </tbody>
-                                </table>
+                                            else
+                                            {
+                                                @foreach (var r in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @r.Organiser.Name
+                                                        </td>
+                                                        <td class="w-25">
+                                                            @r.Name
+                                                        </td>
+                                                        <td>
+                                                            @($"{@r.DateTime:dd-MM-yyyy HH:mm}")
+                                                        </td>
+
+                                                        @if (@r.AdultsOnly == true)
+                                                        {
+                                                            <td>Adults</td>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Family friendly</td>
+
+                                                        }
+                                                        <td>
+                                                            <a asp-controller="GameNight" asp-action="DetailsGameNight" asp-route-id="@r.Id" class="btn btn-primary">
+                                                                <i class="fa-regular fa-circle-info"></i> Detail page
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-truncate">
+                                                            @if (@r.Vegan)
+                                                            {
+                                                                <i class="fa-solid fa-meat"></i>
+                                                            }
+                                                            @if (@r.LactoseIntolerant)
+                                                            {
+                                                                <i class="fa-solid fa-cow"></i>
+                                                            }
+                                                            @if (@r.AlcoholFree)
+                                                            {
+                                                                <i class="fa-solid fa-martini-glass-citrus"></i>
+                                                            }
+                                                            @if (@r.NutAllergy)
+                                                            {
+                                                                <i class="fa-regular fa-peanuts"></i>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    } else
+            {
+                <h2>You are too young to host a game night</h2>
+            }
+
+
 </body>
 
 </html>

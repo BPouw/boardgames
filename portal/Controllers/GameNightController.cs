@@ -62,6 +62,8 @@ namespace portal.Controllers
         public IActionResult HostedGameNights()
         {
             Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
+            bool is18 = _personValidator.CheckAge(person.DateOfBirth);
+            ViewBag.PersonAge = is18;
             return View(_gameNightRepository.getGameNightsByOrganiser(person.Id).ToViewModel());
         }
 
@@ -70,19 +72,7 @@ namespace portal.Controllers
         {
             var model = new NewGameNightViewModel();
             Person person = this._personRepository.GetPersonFromEmail(HttpContext.User.Identity.Name);
-
-            // don't show 18+ games when user is underage
-            if(_personValidator.CheckAge(person.DateOfBirth))
-            {
-                PrefillSelectOptions();
-                HttpContext.Session.SetString("Age", "Adult");
-                ViewBag.Age = "Adult";
-            } else
-            {
-                PrefillSelectOptionsFamily();
-                HttpContext.Session.SetString("Age", "Kid");
-            }
-
+            PrefillSelectOptions();
             return View();
         }
 
@@ -143,13 +133,8 @@ namespace portal.Controllers
             }
             string Age = HttpContext.Session.GetString("Age");
 
-            if (Age == "Adult")
-            {
                 PrefillSelectOptions();
-            } else
-            {
-                PrefillSelectOptionsFamily();
-            }
+
 
             return View(newGameNight);
 
@@ -347,12 +332,6 @@ namespace portal.Controllers
         private void PrefillSelectOptions()
         {
             var games = _gameRepository.getAllGames();
-            ViewBag.Games = new SelectList(games, "Id", "Name");
-        }
-
-        private void PrefillSelectOptionsFamily()
-        {
-            var games = _gameRepository.getAllFamilyGames();
             ViewBag.Games = new SelectList(games, "Id", "Name");
         }
 

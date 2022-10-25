@@ -23,4 +23,16 @@
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="IRepo\" />
+    <None Remove="IService\" />
+    <None Remove="Service\" />
+    <None Remove="Validator\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IRepo\" />
+    <Folder Include="IService\" />
+    <Folder Include="Service\" />
+    <Folder Include="Validator\" />
+  </ItemGroup>
 </Project>
