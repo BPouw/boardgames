@@ -25,7 +25,7 @@ namespace Core.DomainServices.Service
             this._gameRepository = gameRepository;
         }
 
-        public List<string> JoinGameNight(int gameNightId, Person person)
+        public async Task<List<string>> JoinGameNight(int gameNightId, Person person)
         {
             List<string> warnings = new List<string>();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
@@ -64,12 +64,12 @@ namespace Core.DomainServices.Service
             player.PersonId = person.Id;
             player.GameNightId = gameNight.Id;
 
-            this._gameNightPlayerRepository.AddPlayer(player);
+            await this._gameNightPlayerRepository.AddPlayer(player);
 
             return warnings;
         }
 
-        public void LeaveGameNight(int gameNightId, Person person)
+        public async Task LeaveGameNight(int gameNightId, Person person)
         {
             GameNightPlayer player = new GameNightPlayer();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
@@ -78,14 +78,14 @@ namespace Core.DomainServices.Service
 
             try
             {
-                this._gameNightPlayerRepository.DeletePlayer(player);           
+                await this._gameNightPlayerRepository.DeletePlayer(player);           
             } catch
             {
                 throw new DomainException("You are not a participant of this gamenight");
             }
         }
 
-        public List<string> CreateGameNight(GameNight gameNight, int[] GameIds, int OrganiserId)
+        public async Task<List<string>> CreateGameNight(GameNight gameNight, int[] GameIds, int OrganiserId)
         {
             List<string> warnings = new List<string>();
             if (_gameNightValidator.DateInPresent(gameNight.DateTime))
@@ -102,13 +102,13 @@ namespace Core.DomainServices.Service
                         }
                     }
                 }
-                _gameNightRepository.AddGameNight(gameNight);
-                _gameNightGameRepository.AddManyGamesToGameNight(GameIds, gameNight.Id);
+                await _gameNightRepository.AddGameNight(gameNight);
+                await _gameNightGameRepository.AddManyGamesToGameNight(GameIds, gameNight.Id);
 
                 GameNightPlayer organiser = new GameNightPlayer();
                 organiser.GameNightId = gameNight.Id;
                 organiser.PersonId = OrganiserId;
-                _gameNightPlayerRepository.AddPlayer(organiser);
+                await _gameNightPlayerRepository.AddPlayer(organiser);
 
                 return warnings;
 
@@ -118,7 +118,7 @@ namespace Core.DomainServices.Service
             }
         }
 
-        public List<string> DeleteGameNight(int gameNightId)
+        public async Task<List<string>> DeleteGameNight(int gameNightId)
         {
             List<string> warnings = new List<string>();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
@@ -128,11 +128,11 @@ namespace Core.DomainServices.Service
                 warnings.Add("A gamenight can't be removed after players have joined");
             }
 
-            _gameNightRepository.DeleteGameNight(gameNight);
+            await _gameNightRepository.DeleteGameNight(gameNight);
             return warnings;
         }
 
-        public List<string> EditGameNight(GameNight gameNight, int[] GameIds)
+        public async Task<List<string>> EditGameNight(GameNight gameNight, int[] GameIds)
         {
             List<string> warnings = new List<string>();
             if (_gameNightValidator.DateInPresent(gameNight.DateTime))
@@ -150,9 +150,8 @@ namespace Core.DomainServices.Service
                     }
                 }
 
-
-                _gameNightRepository.UpdateGameNight(gameNight);
-                _gameNightGameRepository.UpdateManyGamesToGameNight(GameIds, gameNight.Id);
+                await _gameNightGameRepository.UpdateManyGamesToGameNight(GameIds, gameNight.Id);
+                await _gameNightRepository.UpdateGameNight(gameNight);
 
                 return warnings;
 
@@ -162,7 +161,7 @@ namespace Core.DomainServices.Service
                 throw new DomainException("A game night has to be in future");
             }
 
-        }
+        } 
     }
 }
 

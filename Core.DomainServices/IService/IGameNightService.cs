@@ -5,11 +5,11 @@ namespace Core.DomainServices.IService
 {
     public interface IGameNightService
     {
-        List<string> JoinGameNight(int gameNightId, Person person);
-        void LeaveGameNight(int gameNightId, Person person);
-        List<string> CreateGameNight(GameNight gameNight, int[] GameIds, int OrganiserId);
-        List<string> DeleteGameNight(int gameNightId);
-        List<string> EditGameNight(GameNight gameNight, int[] GameIds);
+        Task<List<string>> JoinGameNight(int gameNightId, Person person);
+        Task LeaveGameNight(int gameNightId, Person person);
+        Task<List<string>> CreateGameNight(GameNight gameNight, int[] GameIds, int OrganiserId);
+        Task<List<string>> DeleteGameNight(int gameNightId);
+        Task<List<string>> EditGameNight(GameNight gameNight, int[] GameIds);
     }
 }
 

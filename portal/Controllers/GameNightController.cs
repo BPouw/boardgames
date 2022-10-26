@@ -124,7 +124,7 @@ namespace portal.Controllers
 
                 try
                 {
-                    List<string> warnings = _gameNightService.CreateGameNight(GameNightToCreate, newGameNight.GameIds, person.Id);
+                    List<string> warnings = await _gameNightService.CreateGameNight(GameNightToCreate, newGameNight.GameIds, person.Id);
                     foreach (string s in warnings)
                     {
                         _toastNotification.Warning(s, 10);
@@ -185,7 +185,7 @@ namespace portal.Controllers
                 Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
                 try
                 {
-                    List<string> warnings = _gameNightService.JoinGameNight((int)id, person);
+                    List<string> warnings = await _gameNightService.JoinGameNight((int)id, person);
 
                     foreach (string s in warnings)
                     {
@@ -216,7 +216,7 @@ namespace portal.Controllers
 
             try
             {
-                _gameNightService.LeaveGameNight((int)id, person);
+                await _gameNightService.LeaveGameNight((int)id, person);
                 _toastNotification.Success("You have left this game night", 10);
                 return RedirectToAction("DetailsGameNight", new { id = id });
 
@@ -232,7 +232,7 @@ namespace portal.Controllers
         {
             int? id = HttpContext.Session.GetInt32("GameNightId");
 
-            List<string> warnings = _gameNightService.DeleteGameNight((int)id);
+            List<string> warnings = await _gameNightService.DeleteGameNight((int)id);
 
             foreach(string warning in warnings)
             {
