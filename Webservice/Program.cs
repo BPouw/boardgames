@@ -1,4 +1,7 @@
-﻿using Infrastructure;
+﻿using Core.DomainServices;
+using Core.DomainServices.IService;
+using Core.DomainServices.Service;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Webservice;
 
@@ -11,9 +14,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 builder.Services.AddScoped<Webservice.Query>();
+
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IGameNightService, GameNightService>();
+
 var connectionString = builder.Configuration.GetConnectionString("BoardgamesContextConnection");
 builder.Services.AddPooledDbContextFactory<BoardgamesContext>(options => options.UseSqlServer(connectionString)
     .EnableSensitiveDataLogging()).AddLogging(Console.WriteLine);

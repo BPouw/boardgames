@@ -21,7 +21,7 @@ namespace portal.Controllers
     {
         private readonly ILogger<GameNightController> _logger;
 
-        // ew ew repo's
+        // repo's
         private IGameNightRepository _gameNightRepository;
         private IGameRepository _gameRepository;
         private IPersonRepository _personRepository;
@@ -31,7 +31,7 @@ namespace portal.Controllers
         private IPersonReviewRepository _personReviewRepository;
         private readonly INotyfService _toastNotification;
 
-        // wow wow services
+        // services
         private IPersonService _personService;
         private IGameNightService _gameNightService;
 
@@ -285,6 +285,7 @@ namespace portal.Controllers
                 updatedGameNight.DateTime = updatedViewModel.GameTime;
                 updatedGameNight.AddressId = originalNight.AddressId;
                 updatedGameNight.OrganiserId = originalNight.OrganiserId;
+                updatedGameNight.Players = originalNight.Players;
 
                 try
                 {

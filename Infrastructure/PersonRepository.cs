@@ -20,6 +20,11 @@ namespace Infrastructure
 
         }
 
+        public Person GetPersonById(int id)
+        {
+            return _context.Person.Where(p => p.Id == id).Single();
+        }
+
         public Person GetPersonFromEmail(string email)
         {
             return _context.Person.SingleOrDefault(p => p.Email == email);
