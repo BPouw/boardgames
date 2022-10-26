@@ -82,7 +82,6 @@ namespace Core.DomainServices.Test
             var Person3 = new Person();
             List<Person> personList = new List<Person>();
 
-
             GameNight.Players = personList;
 
             var Player = new Person()
