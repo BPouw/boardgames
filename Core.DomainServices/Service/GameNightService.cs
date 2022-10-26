@@ -3,6 +3,7 @@ using System.Collections;
 using System.Numerics;
 using Core.Domain;
 using Core.DomainServices.IService;
+using Core.DomainServices.IValidator;
 using Core.DomainServices.Validator;
 
 namespace Core.DomainServices.Service
@@ -14,21 +15,28 @@ namespace Core.DomainServices.Service
         private IGameNightPlayerRepository _gameNightPlayerRepository;
         private IGameRepository _gameRepository;
         private IGameNightValidator _gameNightValidator;
+        private IPersonValidator _personValidator;
 
         public GameNightService(IGameNightRepository gameNightRepository, IGameNightGameRepository gameNightGameRepository, IGameNightPlayerRepository gameNightPlayerRepository, IGameNightValidator gameNightValidator,
-            IGameRepository gameRepository)
+            IGameRepository gameRepository, IPersonValidator personValidator)
         {
             this._gameNightRepository = gameNightRepository;
             this._gameNightGameRepository = gameNightGameRepository;
             this._gameNightPlayerRepository = gameNightPlayerRepository;
             this._gameNightValidator = gameNightValidator;
             this._gameRepository = gameRepository;
+            this._personValidator = personValidator;
         }
 
         public async Task<List<string>> JoinGameNight(int gameNightId, Person person)
         {
             List<string> warnings = new List<string>();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
+
+            if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth))
+            {
+                throw new DomainException("You are too young to join this game night");
+            }
 
             if (_gameNightRepository.HasJoinedGameNightOnDay(person, gameNight.DateTime))
             {

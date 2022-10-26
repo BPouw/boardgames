@@ -1,9 +1,9 @@
 ﻿using System;
-using Core.DomainServices;
+using Core.DomainServices.IValidator;
 
-namespace Infrastructure
+namespace Core.DomainServices.Validator
 {
-    public class PersonValidator : IPersonValidator
+    public class UserValidator: IPersonValidator
     {
         public bool CheckAge(DateTime date)
         {

@@ -10,6 +10,7 @@ using AspNetCoreHero.ToastNotification.Extensions;
 using Core.DomainServices.IService;
 using Core.DomainServices.Service;
 using Core.DomainServices.Validator;
+using Core.DomainServices.IValidator;
 
 var builder = WebApplication.CreateBuilder(args);
 var securityString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
@@ -33,7 +34,6 @@ builder.Services.AddScoped<IGameNightRepository, GameNightRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameNightGameRepository, GameNightGameRepository>();
-builder.Services.AddScoped<IPersonValidator, PersonValidator>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IGameNightPlayerRepository, GameNightPlayerRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -44,6 +44,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IGameNightService, GameNightService>();
 builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
+builder.Services.AddScoped<IPersonValidator, UserValidator>();
 
 builder.Services.AddSession();
 

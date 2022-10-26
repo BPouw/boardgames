@@ -3,6 +3,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
 using Core.DomainServices.IService;
+using Core.DomainServices.IValidator;
 using Core.DomainServices.Service;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
