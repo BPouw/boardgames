@@ -93,11 +93,17 @@ namespace Core.DomainServices.Service
             }
         }
 
-        public async Task<List<string>> CreateGameNight(GameNight gameNight, int[] GameIds, int OrganiserId)
+        public async Task<List<string>> CreateGameNight(GameNight gameNight, int[] GameIds, Person Organiser)
         {
             List<string> warnings = new List<string>();
             if (_gameNightValidator.DateInPresent(gameNight.DateTime))
             {
+
+                if (!_personValidator.CheckAge(Organiser.DateOfBirth))
+                {
+                    throw new DomainException("You must be 18 to host a game night");
+                }
+         
                 foreach (int id in GameIds)
                 {
                     Game Game = _gameRepository.GetById(id);
@@ -115,7 +121,7 @@ namespace Core.DomainServices.Service
 
                 GameNightPlayer organiser = new GameNightPlayer();
                 organiser.GameNightId = gameNight.Id;
-                organiser.PersonId = OrganiserId;
+                organiser.PersonId = Organiser.Id;
                 await _gameNightPlayerRepository.AddPlayer(organiser);
 
                 return warnings;
@@ -126,23 +132,27 @@ namespace Core.DomainServices.Service
             }
         }
 
-        public async Task<List<string>> DeleteGameNight(int gameNightId)
+        public async Task DeleteGameNight(int gameNightId)
         {
-            List<string> warnings = new List<string>();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
 
             if (gameNight.Players.Count > 1)
             {
-                warnings.Add("A gamenight can't be removed after players have joined");
+                throw new DomainException("A game night can not be deleted after players have joined");
             }
 
             await _gameNightRepository.DeleteGameNight(gameNight);
-            return warnings;
         }
 
         public async Task<List<string>> EditGameNight(GameNight gameNight, int[] GameIds)
         {
             List<string> warnings = new List<string>();
+
+            if (gameNight.Players.Count > 1)
+            {
+                throw new DomainException("A game night can not be edited after players have joined");
+            }
+
             if (_gameNightValidator.DateInPresent(gameNight.DateTime))
             {
                 foreach (int id in GameIds)

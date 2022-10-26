@@ -90,7 +90,7 @@ namespace portal.Controllers
         public IActionResult HostedGameNights()
         {
             Person person = this._personService.getPersonFromEmail(HttpContext.User.Identity.Name);
-            bool is18 = _personValidator.CheckAge(person.DateOfBirth);
+            bool is18 = _personService.PersonIs18(person);
             ViewBag.PersonAge = is18;
             return View(_gameNightRepository.getGameNightsByOrganiser(person.Id).ToViewModel());
         }
@@ -125,7 +125,7 @@ namespace portal.Controllers
 
                 try
                 {
-                    List<string> warnings = await _gameNightService.CreateGameNight(GameNightToCreate, newGameNight.GameIds, person.Id);
+                    List<string> warnings = await _gameNightService.CreateGameNight(GameNightToCreate, newGameNight.GameIds, person);
                     foreach (string s in warnings)
                     {
                         _toastNotification.Warning(s, 10);
@@ -233,11 +233,12 @@ namespace portal.Controllers
         {
             int? id = HttpContext.Session.GetInt32("GameNightId");
 
-            List<string> warnings = await _gameNightService.DeleteGameNight((int)id);
-
-            foreach(string warning in warnings)
+            try
             {
-                _toastNotification.Warning(warning, 10);
+                await _gameNightService.DeleteGameNight((int)id);
+            } catch(DomainException e)
+            {
+                _toastNotification.Error(e.Message, 10);
             }
 
             _toastNotification.Success("The game night has been removed", 10);
@@ -287,7 +288,7 @@ namespace portal.Controllers
 
                 try
                 {
-                    _gameNightService.EditGameNight(updatedGameNight, updatedViewModel.GameIds);
+                    await _gameNightService.EditGameNight(updatedGameNight, updatedViewModel.GameIds);
                 } catch(DomainException e)
                 {
                     _toastNotification.Error(e.Message, 10);

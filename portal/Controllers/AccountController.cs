@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
+using Core.DomainServices.IService;
 using Core.DomainServices.IValidator;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -19,9 +20,10 @@ namespace portal.Controllers
         private IPersonRepository _personRepository;
         private IAddressRepository _addressRepository;
         private IPersonValidator _personValidator;
+        private IPersonService _personService;
 
         public AccountController(UserManager<IdentityUser> userMgr,
-            SignInManager<IdentityUser> signInMgr, INotyfService toastNotification, IPersonRepository personRepository, IAddressRepository addressRepository, IPersonValidator personValidator)
+            SignInManager<IdentityUser> signInMgr, INotyfService toastNotification, IPersonRepository personRepository, IAddressRepository addressRepository, IPersonValidator personValidator, IPersonService personService)
         {
             userManager = userMgr;
             signInManager = signInMgr;
@@ -29,6 +31,7 @@ namespace portal.Controllers
             _personRepository = personRepository;
             _addressRepository = addressRepository;
             _personValidator = personValidator;
+            _personService = personService;
             IdentitySeedData.EnsurePopulated(userMgr).Wait();
         }
 
@@ -80,7 +83,7 @@ namespace portal.Controllers
                     return View();
                 }
 
-            if (!_personValidator.CheckAgeMinimumSixteen(loginModel.DateOfBirth))
+            if (!_personService.PersonIs16(loginModel.DateOfBirth))
             {
                 _toastNotification.Error("You must be at least 16 years old", 10);
                 return View();
