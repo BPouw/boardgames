@@ -34,7 +34,6 @@ namespace Infrastructure
 
         public async Task UpdateManyGamesToGameNight(int[] GameNightGameId, int GameNightId)
         {
-
             _context.GameNight_Game.RemoveRange(_context.GameNight_Game.Where(p => p.GameNightId == GameNightId));
 
             //add all to database
@@ -45,8 +44,7 @@ namespace Infrastructure
                     gameNightGame.GameId = id;
                     _context.GameNight_Game.Add(gameNightGame);
                 }
-
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
         }
 

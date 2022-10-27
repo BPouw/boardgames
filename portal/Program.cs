@@ -25,7 +25,6 @@ builder.Services.AddDbContext<BoardgamesContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<Infrastructure.SecurityContext>();
 
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

@@ -5,34 +5,46 @@
 @model CreateReviewViewModel
 
 
-    <head>
-        <link href="~/css/review.css" rel="stylesheet" />
-    </head>
+<head>
+    <link href="~/css/form.css" rel="stylesheet" />
+</head>
 
-<h1>Post review</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Review" asp-action="CreateReview" method="post">
+<link rel="stylesheet" href="/css/form.css">
 
-            <div class="form-group">
-                <label asp-for="ReviewText" class="control-label"></label>
-                <input asp-for="ReviewText" class="form-control" />
-                <span asp-validation-for="ReviewText" class="text-danger"></span>
+<div>
+
+    <div asp-validation-summary="All"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card my-5">
+
+                    <form asp-controller="Review" asp-action="CreateReview" class="card-body cardbody-color p-lg-5" method="post">
+                        <h2>@ViewData["Title"]</h2>
+                        <div class="mb-3">
+                            <label asp-for="ReviewText" class="control-label">Review</label>
+                            <input asp-for="ReviewText" class="form-control" />
+                            <span asp-validation-for="ReviewText" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Rating" class="control-label"></label>
+                            <input type="number" asp-for="Rating" min="1" max="5">
+                        </div>
+
+                        <div class="form-group row">
+                            <button class="btn btn-primary col-sm-4 text-center">Add review</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input type="number" asp-for="Rating" min="1" max="5">
-            </div>
-
-            <div class="form-group row">
-                <button class="btn btn-primary col-sm-4 text-center">Add review</button>
-            </div>
-
-        </form>
+        </div>
     </div>
-</div>
 
+</div>
 
 
 

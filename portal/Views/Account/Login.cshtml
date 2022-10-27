@@ -1,21 +1,70 @@
-﻿@model LoginViewModel
-@{
-    ViewBag.Title = "Log In";
+﻿@*@model LoginViewModel
+    @{
+        ViewBag.Title = "Log In";
 
-}
+    }
 
-<div class="text-danger" asp-validation-summary="All"></div>
+    <div class="login-card">
 
-<form asp-action="Login" asp-controller="Account" method="post">
-    <div class="form-group">
-        <label>Email</label>
-        <div><span asp-validation-for="Name" class="text-danger"></span></div>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <div><span asp-validation-for="Password" class="text-danger"></span></div>
-        <input asp-for="Password" class="form-control" />
-    </div>
-    <button class="btn btn-primary" type="submit">Log In</button>
-</form>
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <form asp-action="Login" asp-controller="Account" method="post">
+            <div class="form-group">
+                <label>Email</label>
+                <div><span asp-validation-for="Name" class="text-danger"></span></div>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <div><span asp-validation-for="Password" class="text-danger"></span></div>
+                <input asp-for="Password" class="form-control" />
+            </div>
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </form>
+
+        <link rel="stylesheet" href="/css/login.css">
+
+    </div>*@
+
+@model LoginViewModel
+    <body>
+        <link rel="stylesheet" href="/css/login.css">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card my-5">
+
+                        <form class="card-body cardbody-color p-lg-5" asp-action="Login" asp-controller="Account" method="post">
+
+                            <div class="text-center">
+                                <img src="~/pictures/gamenight.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                                     width="200px" alt="profile">
+                            </div>
+                            <div class="text-danger" asp-validation-summary="All"></div>
+
+                                <div class="mb-3">
+                                    <label>Email</label>
+                                    <div><span asp-validation-for="Name" class="text-danger"></span></div>
+                                    <input asp-for="Name" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Password"></label>
+                                    <div><span asp-validation-for="Password" class="text-danger"></span></div>
+                                    <input asp-for="Password" class="form-control" />
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-success px-5 mb-5 w-100" type="submit">Log In</button>
+                                </div>
+
+                            </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+

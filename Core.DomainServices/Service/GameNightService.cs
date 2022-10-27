@@ -168,8 +168,9 @@ namespace Core.DomainServices.Service
                     }
                 }
 
-                await _gameNightGameRepository.UpdateManyGamesToGameNight(GameIds, gameNight.Id);
                 await _gameNightRepository.UpdateGameNight(gameNight);
+
+                await _gameNightGameRepository.UpdateManyGamesToGameNight(GameIds, gameNight.Id);
 
                 return warnings;
 

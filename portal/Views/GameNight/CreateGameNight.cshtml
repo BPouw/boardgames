@@ -1,67 +1,81 @@
 ﻿@{
     ViewData["Title"] = "Add a new game night";
 }
-<h1>@ViewData["Title"]</h1>
+
 
 @model NewGameNightViewModel
+
+<link rel="stylesheet" href="/css/form.css">
 
 <div>
 
     <div asp-validation-summary="All"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card my-5">
 
-    <div>
-        <form asp-action="CreateGameNight" method="post">
+                    <form class="card-body cardbody-color p-lg-5" asp-action="CreateGameNight" method="post">
 
-            <div class="form-group">
-                <label asp-for="Name">Enter the title:</label>
-                <input class="form-control" asp-for="Name" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+                        <h2>@ViewData["Title"]</h2>
 
-            <div class="form-group">
-                <label asp-for="GameTime">Enter the date and time:</label>
-                <input class="form-control" asp-for="GameTime" />
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="Name">Enter the title:</label>
+                            <input class="form-control" asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group">
-                <label asp-for="MaxPlayers">Enter the maximum amount of players:</label>
-                <input class="form-control" asp-for="MaxPlayers" />
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="GameTime">Enter the date and time:</label>
+                            <input class="form-control" asp-for="GameTime" />
+                        </div>
 
-            <div class="form-group">
-                <label asp-for="GameIds">What are we playing?:</label>
-                <select class="form-control" asp-for="GameIds" asp-items="@ViewBag.Games" multiple></select>
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="MaxPlayers">Enter the maximum amount of players:</label>
+                            <input class="form-control" asp-for="MaxPlayers" />
+                        </div>
 
-                <div class="form-group">
-                    <label asp-for="AdultsOnly">Adults only?:</label>
-                    <input type="checkbox" asp-for="AdultsOnly" />
+                        <div class="mb-3">
+                            <label asp-for="GameIds">What are we playing?:</label>
+                            <select class="form-control" asp-for="GameIds" asp-items="@ViewBag.Games" multiple></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="checkbox" asp-for="AdultsOnly" />
+                            <label asp-for="AdultsOnly">Adults only?</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="checkbox" asp-for="LactoseIntolerant" />
+                            <label asp-for="LactoseIntolerant">Will there be lactose products?</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="checkbox" asp-for="Vegan" />
+                            <label asp-for="Vegan">Will there be meat?</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="checkbox" asp-for="AlcoholFree" />
+                            <label asp-for="AlcoholFree">Will there be alcohol?</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="checkbox" asp-for="NutAllergy" />
+                            <label asp-for="NutAllergy">Will there be nuts?</label>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <button class="btn btn-primary col-sm-4 text-center">Add game night</button>
+                        </div>
+                    </form>
+
                 </div>
 
-
-            <div class="form-group">
-                <label asp-for="LactoseIntolerant">Will there be lactose products?:</label>
-                <input type="checkbox" asp-for="LactoseIntolerant" />
             </div>
-
-            <div class="form-group">
-                <label asp-for="Vegan">Will there be meat?:</label>
-                <input type="checkbox" asp-for="Vegan" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="AlcoholFree">Will there be alcohol?:</label>
-                <input type="checkbox" asp-for="AlcoholFree" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NutAllergy">Will there be nuts?:</label>
-                <input type="checkbox" asp-for="NutAllergy" />
-            </div>
-
-            <div class="form-group row">
-                <button class="btn btn-primary col-sm-4 text-center">Add game night</button>
-            </div>
-        </form>
+        </div>
     </div>
+
 </div>
+
+

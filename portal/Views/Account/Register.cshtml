@@ -3,78 +3,115 @@
     ViewBag.Title = "Register";
 
 }
- 
-<div class="text-danger" asp-validation-summary="All"></div>
 
-<form asp-action="Register" asp-controller="Account" method="post">
+<link rel="stylesheet" href="/css/form.css">
+<body>
 
-    <div class="form-group">
-        <label asp-for="Email">Email:</label>
-        <div><span asp-validation-for="Email" class="text-danger"></span></div>
-        <input asp-for="Email" class="form-control" />
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card my-5">
+
+                    <form class="card-body cardbody-color p-lg-5 my-card" asp-action="Register" asp-controller="Account" method="post">
+
+                        <div class="field-group-input">
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="Name">Full name:</label>
+                                <input class="form-control" asp-for="Name" />
+                            </div>
+
+                            <div class="field-group-filler"></div>
+
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="Email">Email:</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="field-group-input">
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="DateOfBirth">Date of birth:</label>
+                                <input class="form-control" asp-for="DateOfBirth" />
+                            </div>
+
+                            <div class="field-group-filler"></div>
+
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="Gender">Gender:</label>
+                                <select class="form-control" asp-for="Gender" asp-items="Html.GetEnumSelectList<GenderViewModel>()"> </select>
+                            </div>
+                        </div>
+
+                        <div class="field-group-input">
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="StreetName">Street name:</label>
+                                <input class="form-control" asp-for="StreetName" />
+                            </div>
+
+                            <div class="field-group-filler"></div>
+
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="HouseNumber">House number:</label>
+                                <input class="form-control" asp-for="HouseNumber" />
+                            </div>
+                        </div>
+
+                        <div class="field-group-input">
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="City">City:</label>
+                                <input class="form-control" asp-for="City" />
+                            </div>
+
+                            <div class="field-group-filler"></div>
+
+                            <div class="mb-3 my-form-input">
+                                <label asp-for="PostalCode">Postal code:</label>
+                                <input class="form-control" asp-for="PostalCode" />
+                            </div>
+                        </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password">Password:</label>
+                                <div><span asp-validation-for="Password" class="text-danger"></span></div>
+                                <input asp-for="Password" class="form-control" />
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="checkbox" asp-for="LactoseIntolerant" />
+                                <label asp-for="LactoseIntolerant">Lactose intolerant</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="checkbox" asp-for="Vegan" />
+                                <label asp-for="Vegan">Vegan</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="checkbox" asp-for="AlcoholFree" />
+                                <label asp-for="AlcoholFree">Alcohol free</label>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="checkbox" asp-for="NutAllergy" />
+                                <label asp-for="NutAllergy">Nut allergy</label>
+                            </div>
+
+                            <button class="btn btn-success" type="submit">Register</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Password">Password:</label>
-        <div><span asp-validation-for="Password" class="text-danger"></span></div>
-        <input asp-for="Password" class="form-control" />
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Name">Full name:</label>
-        <input class="form-control" asp-for="Name" />
-    </div>
 
-    <div class="form-group">
-        <label asp-for="DateOfBirth">Date of birth:</label>
-        <input class="form-control" asp-for="DateOfBirth" />
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Gender">Gender:</label>
-        <select class="form-control" asp-for="Gender" asp-items="Html.GetEnumSelectList<GenderViewModel>()" > </select>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="StreetName">Street name:</label>
-        <input class="form-control" asp-for="StreetName" />
-    </div>
+</body>
 
-    <div class="form-group">
-        <label asp-for="HouseNumber">House number:</label>
-        <input class="form-control" asp-for="HouseNumber" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="City">City:</label>
-        <input class="form-control" asp-for="City" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PostalCode">Postal code:</label>
-        <input class="form-control" asp-for="PostalCode" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="LactoseIntolerant">Lactose intolerant:</label>
-        <input type="checkbox" asp-for="LactoseIntolerant" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Vegan">Vegan:</label>
-        <input type="checkbox" asp-for="Vegan" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="AlcoholFree">Alcohol free:</label>
-        <input type="checkbox" asp-for="AlcoholFree" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="NutAllergy">Nut allergy:</label>
-        <input type="checkbox" asp-for="NutAllergy" />
-    </div>
-
-    <button class="btn btn-primary" type="submit">Register</button>
-
-</form>

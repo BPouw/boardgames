@@ -1,0 +1,43 @@
+﻿
+body {
+    background: linear-gradient(315deg, #46b361 0%, #98d5a7 5%, #b6e2c1 15%, #d3eed9 33%, #fcfffc 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: open sans, sans-serif;
+    color: #2D3A3A;
+}
+
+
+.border-success {
+    border-color: #248232 !important;
+}
+
+
+
+.btn-success {
+    background-color: #248232;
+    border-color: #248232;
+}
+
+    .btn-success:hover {
+        background-color: #1C662A;
+        border-color: #144921;
+    }
+
+    .btn-success:active {
+        background-color: #144921;
+        border-color: #248232;
+    }
+
+    .btn-success:focus {
+        background-color: #1C662A;
+        border-color: #144921;
+        box-shadow: 0 0 0 0.25rem rgba(43, 168, 74, .5) !important;
+    }
+
+    .btn-success:disabled {
+        background-color: #248232;
+        border-color: #248232;
+    }
+
