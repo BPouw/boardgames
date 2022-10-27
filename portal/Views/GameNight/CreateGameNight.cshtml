@@ -33,13 +33,11 @@
                 <select class="form-control" asp-for="GameIds" asp-items="@ViewBag.Games" multiple></select>
             </div>
 
-            @if (ViewBag.Age == "Adult")
-            {
                 <div class="form-group">
                     <label asp-for="AdultsOnly">Adults only?:</label>
                     <input type="checkbox" asp-for="AdultsOnly" />
                 </div>
-            }
+
 
             <div class="form-group">
                 <label asp-for="LactoseIntolerant">Will there be lactose products?:</label>

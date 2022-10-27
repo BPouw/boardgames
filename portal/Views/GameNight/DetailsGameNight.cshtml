@@ -16,12 +16,12 @@
                         <div class="mt-4 w-100">
                             <h4>@Model.Name</h4>
                             <p class="text-secondary">@Model.DateTime</p>
-                            @if (@ViewBag.PersonId == @Model.OrganiserId)
+                            @if (@ViewBag.PersonId == @Model.OrganiserId && Model.Players.Count <= 1)
                             {
                                     <a class="btn btn-warning mr-3" asp-controller="gamenight" asp-action="EditGameNight" asp-route-id="@Model.Id"><i class='fa-solid fa-pencil'></i> Edit</a>
                                     <a class="btn btn-danger" asp-controller="gamenight" asp-action="DeleteGameNight" asp-route-id="@Model.Id"><i class="fa-solid fa-trash"></i> Delete </a>
                             }
-                            else
+                            else if (@ViewBag.PersonId != Model.OrganiserId)
                             {     
                                     <a class="btn btn-success mr-3" asp-controller="gamenight" asp-action="JoinGameNight"><i class="fa-solid fa-plus"></i> Join </a>
                                     <a class="btn btn-danger" asp-controller="gamenight" asp-action="LeaveGameNight"><i class="fa-solid fa-minus"></i> Leave </a>

@@ -37,7 +37,7 @@ namespace portal.Models
                 NutAllergy = gameNight.NutAllergy, 
                   AlcoholFree = gameNight.AlcoholFree
 
-    };
+            };
             return result;
         }
 

@@ -293,6 +293,8 @@ namespace portal.Controllers
                 } catch(DomainException e)
                 {
                     _toastNotification.Error(e.Message, 10);
+                    PrefillSelectOptions();
+                    return View(updatedViewModel);
                 }
 
                 return RedirectToAction("DetailsGameNight", new { id = updatedGameNight.Id });

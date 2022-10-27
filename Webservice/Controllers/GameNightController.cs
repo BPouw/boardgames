@@ -3,6 +3,10 @@ using Core.DomainServices;
 using Core.DomainServices.Service;
 using Core.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Core.DomainServices.IService;
+using Core.DomainServices.IValidator;
+using Core.DomainServices.Validator;
+using Infrastructure;
 
 namespace Webservice
 {
@@ -10,13 +14,21 @@ namespace Webservice
     [Route("restapi/[controller]/")]
     public class GameNightController : ControllerBase
     {
-        private GameNightService _gameNightService;
+        private IGameNightService _gameNightService;
         private IPersonRepository _personRepository;
+        private IGameNightRepository _gameNightRepository;
 
-        public GameNightController(GameNightService gameNightService, IPersonRepository personRepository)
+        public GameNightController(IGameNightService gameNightService, IPersonRepository personRepository, IGameNightRepository gameNightRepository)
         {
             _gameNightService = gameNightService;
             _personRepository = personRepository;
+            _gameNightRepository = gameNightRepository;
+        }
+
+        [HttpGet("GetGameNightByOrganiser")]
+        public ActionResult<List<GameNight>> GetGameNightsPerOrganizer(int PersonId)
+        {
+            return Ok(_gameNightRepository.getGameNightsByOrganiser(PersonId));
         }
 
         [HttpPost("JoinGameNight")]
@@ -26,13 +38,16 @@ namespace Webservice
             List<string> Warnings = new List<string>();
             try
             {
-               Warnings = await _gameNightService.JoinGameNight(GameNightId, Person);
+                Warnings = await _gameNightService.JoinGameNight(GameNightId, Person);
                 return Ok(Warnings);
-            } catch(DomainException e)
+            }
+            catch (DomainException e)
             {
                 return BadRequest(e.Message);
             }
         }
     }
 }
+
+
 
