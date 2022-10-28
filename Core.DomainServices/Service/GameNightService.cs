@@ -167,8 +167,17 @@ namespace Core.DomainServices.Service
                         }
                     }
                 }
+                GameNightPlayer gameNightPlayer = new GameNightPlayer
+                {
+                    GameNightId = gameNight.Id,
+                    PersonId = gameNight.OrganiserId
+                };
+
+                await _gameNightPlayerRepository.DeletePlayer(gameNightPlayer);
 
                 await _gameNightRepository.UpdateGameNight(gameNight);
+
+                await _gameNightPlayerRepository.AddPlayer(gameNightPlayer);
 
                 await _gameNightGameRepository.UpdateManyGamesToGameNight(GameIds, gameNight.Id);
 

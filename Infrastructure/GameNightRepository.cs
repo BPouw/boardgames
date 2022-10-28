@@ -67,9 +67,23 @@ namespace Infrastructure
 
         public async Task UpdateGameNight(GameNight gameNight)
         {
-            _context.ChangeTracker.Clear();
-            _context.GameNight.Update(gameNight);
-            await _context.SaveChangesAsync();
+
+            var local = _context.Set<GameNight>()
+                .Local
+                .FirstOrDefault(entry => entry.Id.Equals(gameNight.Id));
+
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            // set Modified flag in your entry
+            _context.Entry(gameNight).State = EntityState.Modified;
+
+            // save 
+            _context.SaveChanges();
+
         }
     }
 }

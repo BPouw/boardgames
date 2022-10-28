@@ -20,3 +20,20 @@ body {
 .banner_logo {
     width: 25px;
 }
+
+a.navbar-brand {
+    color: #248232 !important;
+}
+
+    a.navbar-brand:hover {
+        color: #2D3A3A !important;
+    }
+
+a.nav-link {
+    color: #040F0F !important;
+}
+
+    a.nav-link:hover {
+        color: #248232 !important;
+        text-decoration: underline;
+    }
