@@ -1,0 +1,37 @@
+﻿body {
+    background: linear-gradient(315deg, #46b361 0%, #98d5a7 5%, #b6e2c1 15%, #d3eed9 33%, #fcfffc 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: open sans, sans-serif;
+    color: #2D3A3A;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 40px;
+/*    grid-template-columns: 350px;
+    grid-template-rows: auto;
+    justify-content: space-around;
+    row-gap: 20px;
+    column-gap: 20px;*/
+}
+
+
+.review-card {
+    background: #98d5a7;
+    padding: 40px;
+    border-radius: 25px;
+    width: 400px;
+    height: 250px;
+}
+
+.one-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-outline-success {
+    margin: 20px;
+}

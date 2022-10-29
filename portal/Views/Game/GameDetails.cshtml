@@ -4,6 +4,7 @@
 </head>
 
 <div class="container">
+    <a class="btn btn-outline-success" asp-controller="GameNight" asp-action="Index" ><i class="fa-solid fa-arrow-left"></i> Back</a>
     <h1 class="mb-5">Details for @Model.Name</h1>
     <div class="row gutters-sm mb-3">
         <div class="col-md-4 mb-3">
@@ -50,12 +51,14 @@
                             <h6 class="mb-0 ">Age rating</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @if(Model.AdultsOnly == true){
-                                    <span>18+</span>
-                                } else
-                                {
-                                    <span>All ages</span>
-                                }
+                            @if (Model.AdultsOnly == true)
+                            {
+                                <span>18+</span>
+                            }
+                            else
+                            {
+                                <span>All ages</span>
+                            }
                         </div>
                     </div>
                     <hr>

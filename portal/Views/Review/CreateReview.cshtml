@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Post review";
+    ViewData["Title"] = "Review host";
 }
 
 @model CreateReviewViewModel
@@ -28,8 +28,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Rating" class="control-label"></label>
-                            <input type="number" asp-for="Rating" min="1" max="5">
+                            <label asp-for="Rating" class="control-label">Rating (1/5)</label>
+                            <input type="number" asp-for="Rating" class="form-control" min="1" max="5">
                         </div>
 
                         <div class="form-group row">

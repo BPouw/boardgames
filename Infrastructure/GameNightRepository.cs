@@ -33,7 +33,7 @@ namespace Infrastructure
 
         public GameNight getGameNightById(int id)
         {
-            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).Include(g => g.Players).First();
+            return _context.GameNight.Where(p => p.Id == id).Include(g => g.Organiser).Include(g => g.Players).FirstOrDefault();
         }
 
         public GameNight getGameNightPopulated(int id)
@@ -82,8 +82,13 @@ namespace Infrastructure
             _context.Entry(gameNight).State = EntityState.Modified;
 
             // save 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
+        }
+
+        public IEnumerable<GameNight> getGameNightsPopulated()
+        {
+            return _context.GameNight.Include(g => g.Games).Include(g => g.Players).Include(g => g.Address).Include(g => g.Organiser).OrderBy(g => g.DateTime);
         }
     }
 }

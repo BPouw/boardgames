@@ -172,6 +172,7 @@ namespace portal.Controllers
 
 
             ViewBag.PersonId = person.Id;
+            ViewBag.HostName = gameNight.Organiser.Name;
 
 
             return View(gameNight.ToViewModel());
@@ -290,6 +291,7 @@ namespace portal.Controllers
                 try
                 {
                     await _gameNightService.EditGameNight(updatedGameNight, updatedViewModel.GameIds);
+                    _toastNotification.Success("The game night has been updated", 10);
                 } catch(DomainException e)
                 {
                     _toastNotification.Error(e.Message, 10);

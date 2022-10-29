@@ -7,11 +7,13 @@ using Core.DomainServices.IService;
 using Core.DomainServices.IValidator;
 using Core.DomainServices.Validator;
 using Infrastructure;
+using Webservice.Dtos;
+using System.Net;
 
 namespace Webservice
 {
     [ApiController]
-    [Route("restapi/[controller]/")]
+    [Route("restapi/gamenights/")]
     public class GameNightController : ControllerBase
     {
         private IGameNightService _gameNightService;
@@ -25,13 +27,20 @@ namespace Webservice
             _gameNightRepository = gameNightRepository;
         }
 
-        [HttpGet("GetGameNightByOrganiser")]
-        public ActionResult<List<GameNight>> GetGameNightsPerOrganizer(int PersonId)
+        [HttpGet("{id:int}")]
+        public ActionResult<GameNightDto> GetGameNight(int id)
         {
-            return Ok(_gameNightRepository.getGameNightsByOrganiser(PersonId));
+            try
+            {
+                GameNightDto dto = _gameNightService.GetGameNightById(id).ToDTO();
+                return (Ok(dto));
+            } catch(DomainException e)
+            {
+                return BadRequest(new { error = e.Message });
+            }
         }
 
-        [HttpPost("JoinGameNight")]
+        [HttpPost("{GameNightId:int}/players/{PersonId:int}")]
         public async Task<IActionResult> JoinGameNight(int GameNightId, int PersonId)
         {
             Person Person = _personRepository.GetPersonById(PersonId);
@@ -39,11 +48,11 @@ namespace Webservice
             try
             {
                 Warnings = await _gameNightService.JoinGameNight(GameNightId, Person);
-                return Ok(Warnings);
+                return CreatedAtAction("JoinGameNight", Warnings.ToDTO());
             }
             catch (DomainException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new {error = e.Message});
             }
         }
     }

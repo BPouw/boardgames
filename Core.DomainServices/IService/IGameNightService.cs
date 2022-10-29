@@ -10,6 +10,7 @@ namespace Core.DomainServices.IService
         Task<List<string>> CreateGameNight(GameNight gameNight, int[] GameIds, Person OrganiserId);
         Task DeleteGameNight(int gameNightId);
         Task<List<string>> EditGameNight(GameNight gameNight, int[] GameIds);
+        GameNight GetGameNightById(int gameNightId);
     }
 }
 

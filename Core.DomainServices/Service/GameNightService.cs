@@ -33,6 +33,11 @@ namespace Core.DomainServices.Service
             List<string> warnings = new List<string>();
             GameNight gameNight = _gameNightRepository.getGameNightById(gameNightId);
 
+            if (gameNight == null)
+            {
+                throw new DomainException("This game night does not exist");
+            }
+
             if (gameNight.AdultsOnly && !_personValidator.CheckAge(person.DateOfBirth))
             {
                 throw new DomainException("You are too young to join this game night");
@@ -130,6 +135,18 @@ namespace Core.DomainServices.Service
             {
                 throw new DomainException("Game night must be in the future");
             }
+        }
+
+        public GameNight GetGameNightById(int gameNightId)
+        {
+
+                GameNight GameNight = _gameNightRepository.getGameNightById(gameNightId);
+                if (GameNight == null)
+                {
+                    throw new DomainException("A game night with this ID does not exist");
+                }
+            return GameNight;
+
         }
 
         public async Task DeleteGameNight(int gameNightId)

@@ -12,7 +12,7 @@
     "Webservice": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:61433",
+      "applicationUrl": "http://localhost:20366",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

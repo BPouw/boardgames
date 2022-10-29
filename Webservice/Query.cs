@@ -8,6 +8,6 @@ namespace Webservice
 {
     public class Query
     {
-        public IEnumerable<GameNight> GetGameNights(IGameNightRepository gameNightRepository) => gameNightRepository.getGameNights();
+        public IEnumerable<GameNight> GetGameNights(IGameNightRepository gameNightRepository) => gameNightRepository.getGameNightsPopulated();
     }    
 }

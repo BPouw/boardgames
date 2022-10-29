@@ -18,5 +18,6 @@ namespace Core.DomainServices
         Task DeleteGameNight(GameNight gameNight);
         Task UpdateGameNight(GameNight gameNight);
         bool HasJoinedGameNightOnDay(Person person, DateTime date);
+        IEnumerable<GameNight> getGameNightsPopulated();
     }
 }

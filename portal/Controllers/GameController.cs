@@ -32,6 +32,8 @@ namespace portal.Controllers
         public IActionResult GameDetails(int id)
         {
             Game game = _gameRepository.GetById(id);
+            int OriginalGameNight = (int)HttpContext.Session.GetInt32("GameNightId");
+            ViewBag.GameNightId = OriginalGameNight;
             return View(game.ToViewModel());
         }
 
