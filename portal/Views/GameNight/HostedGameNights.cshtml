@@ -79,19 +79,19 @@
                                                             </a>
                                                         </td>
                                                         <td class="text-truncate">
-                                                            @if (@r.Vegan)
+                                                            @if (!@r.Vegan)
                                                             {
                                                                 <i class="fa-solid fa-meat"></i>
                                                             }
-                                                            @if (@r.LactoseIntolerant)
+                                                            @if (!@r.LactoseIntolerant)
                                                             {
                                                                 <i class="fa-solid fa-cow"></i>
                                                             }
-                                                            @if (@r.AlcoholFree)
+                                                            @if (!@r.AlcoholFree)
                                                             {
                                                                 <i class="fa-solid fa-martini-glass-citrus"></i>
                                                             }
-                                                            @if (@r.NutAllergy)
+                                                            @if (!@r.NutAllergy)
                                                             {
                                                                 <i class="fa-regular fa-peanuts"></i>
                                                             }
