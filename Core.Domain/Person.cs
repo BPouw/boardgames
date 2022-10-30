@@ -21,7 +21,7 @@ namespace Core.Domain
         public Boolean AlcoholFree { get; set; }
         public ICollection<GameNight> GameNights { get; set; }
         public ICollection<GameNight> OrganisedGameNights { get; set; }
-        public ICollection<Review>? ReceivedReviews { get; set; }
-        public ICollection<Review>? WrittenReviews { get; set; }
+        public ICollection<Review> ReceivedReviews { get; set; }
+        public ICollection<Review> WrittenReviews { get; set; }
     }
 }

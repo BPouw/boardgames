@@ -160,7 +160,7 @@ namespace portal.Controllers
             {
                 double doublescore = _personReviewRepository.AverageScoreForPerson(gameNight.OrganiserId);
                 ViewBag.AverageScore = Convert.ToInt32(doublescore);
-            } catch(Exception e)
+            } catch (Exception)
             {
                 ViewBag.AverageScore = 0;
             }

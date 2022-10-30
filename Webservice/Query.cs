@@ -11,3 +11,4 @@ namespace Webservice
         public IEnumerable<GameNight> GetGameNights(IGameNightRepository gameNightRepository) => gameNightRepository.getGameNightsPopulated();
     }    
 }
+

@@ -42,6 +42,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // services hip en modern
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IGameNightService, GameNightService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IGameNightValidator, GameNightValidator>();
 builder.Services.AddScoped<IPersonValidator, UserValidator>();
 

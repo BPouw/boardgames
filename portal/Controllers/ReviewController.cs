@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Domain;
 using Core.DomainServices;
+using Core.DomainServices.IService;
+using Core.DomainServices.Service;
 using Microsoft.AspNetCore.Mvc;
 using portal.Models;
 
@@ -14,15 +16,15 @@ namespace portal.Controllers
 {
     public class ReviewController : Controller
     {
-        private IReviewRepository _reviewRepository;
-        private IPersonReviewRepository _personReviewRepository;
         private INotyfService _toastNotification;
+        private IReviewService _reviewService;
+        private IPersonReviewRepository _personReviewRepository;
 
-        public ReviewController(IReviewRepository reviewRepository, IPersonReviewRepository personReviewRepository, INotyfService toastNotification)
+        public ReviewController(INotyfService toastNotification, IReviewService reviewService, IPersonReviewRepository personReviewRepository)
         {
-            this._reviewRepository = reviewRepository;
-            this._personReviewRepository = personReviewRepository;
             this._toastNotification = toastNotification;
+            this._personReviewRepository = personReviewRepository;
+            this._reviewService = reviewService;
         }
 
 
@@ -44,24 +46,19 @@ namespace portal.Controllers
                 review.ReviewText = reviewViewModel.ReviewText;
                 review.Rating = reviewViewModel.Rating;
 
-                //review.ReviewText = "Dit is een test joey&danine";
-                //review.Rating = 5;
+                review.ReviewerId = HttpContext.Session.GetInt32("ReviewerId");
 
-                review.ReviewerId = (int)HttpContext.Session.GetInt32("ReviewerId");
+                personReview.PersonId = HttpContext.Session.GetInt32("OrganiserId");
 
-                personReview.PersonId = (int)HttpContext.Session.GetInt32("OrganiserId");
-
-                if (personReview.PersonId == review.ReviewerId)
+                try
                 {
-                    _toastNotification.Error("You can not review yourself", 10);
-                    return Redirect("/GameNight/Index");
-                }
+                    await _reviewService.CreateReview(review, personReview);
+                    _toastNotification.Success("Created review", 10);
+                } catch(DomainException e)
+                {
+                    _toastNotification.Error(e.Message, 10);
+                } 
 
-                await _reviewRepository.AddReview(review);
-
-                personReview.ReviewId = review.Id;
-
-                await _personReviewRepository.AddPersonToReview(personReview);
                 return Redirect("/GameNight/Index");
             }
             return View(reviewViewModel);

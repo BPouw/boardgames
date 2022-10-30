@@ -93,7 +93,7 @@ namespace portal.Controllers
             {
                 user = new IdentityUser(loginModel.Email);
 
-                await userManager.CreateAsync(user, loginModel.Password);
+                var result = await userManager.CreateAsync(user, loginModel.Password);
 
                 Person person = new Person();
                 Address address = new Address();
@@ -125,7 +125,7 @@ namespace portal.Controllers
 
             }
 
-            ModelState.AddModelError("", "Invalid name or password");
+            //ModelState.AddModelError(loginModel.Password, "A password must contain characters, letters and numbers");
             return View(loginModel);
         }
 
@@ -135,7 +135,7 @@ namespace portal.Controllers
             return Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> AccessDenied(string returnUrl)
+        public IActionResult AccessDenied(string returnUrl)
         {
             return View();
         }
