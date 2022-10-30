@@ -47,7 +47,7 @@ namespace Core.DomainServices.Test
             }
 
             // Assert
-            Assert.Equal(expectedException.Message, "You are too young to join this game night");
+            Assert.Equal("You are too young to join this game night", expectedException.Message);
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace Core.DomainServices.Test
             }
 
             // Assert
-            Assert.Equal(Exception.Message, "This gamenight is full");
+            Assert.Equal("This gamenight is full", Exception.Message);
         }
 
         [Fact]
@@ -263,7 +263,7 @@ namespace Core.DomainServices.Test
             }
 
             // Assert
-            Assert.Equal(Exception.Message, "You can not join two game nights on the same day");
+            Assert.Equal("You can not join two game nights on the same day", Exception.Message);
         }
 
         [Fact]
@@ -365,7 +365,7 @@ namespace Core.DomainServices.Test
 
 
             // Assert
-            Assert.Equal(warnings[0], "This gamenight contains nuts");
+            Assert.Equal("This gamenight contains nuts", warnings[0]);
         }
 
         [Fact]
@@ -412,9 +412,8 @@ namespace Core.DomainServices.Test
 
             warnings = await _gs.JoinGameNight(1, Person);
 
-
             // Assert
-            Assert.Equal(warnings.Count, 0);
+            Assert.Empty(warnings);
         }
 
 

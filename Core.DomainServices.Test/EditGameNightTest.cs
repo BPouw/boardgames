@@ -59,7 +59,7 @@ namespace Core.DomainServices.Test
             }
 
             //Assert
-            Assert.Equal(exception.Message, "A game night can not be edited after players have joined");
+            Assert.Equal("A game night can not be edited after players have joined", exception.Message);
         }
 
         [Fact]

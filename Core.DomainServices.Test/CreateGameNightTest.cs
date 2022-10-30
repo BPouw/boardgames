@@ -47,7 +47,7 @@ namespace Core.DomainServices.Test
             }
 
             //Assert
-            Assert.Equal(Exception.Message, "You must be 18 to host a game night");
+            Assert.Equal("You must be 18 to host a game night", Exception.Message);
 
         }
 
