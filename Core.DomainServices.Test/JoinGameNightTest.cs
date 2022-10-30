@@ -338,7 +338,7 @@ namespace Core.DomainServices.Test
             GameNight.AdultsOnly = true;
             GameNight.DateTime = new DateTime(2023, 10, 09);
             GameNight.MaxPlayers = 4;
-            GameNight.NutAllergy = true;
+            GameNight.NutAllergy = false;
 
             var Person2 = new Person();
             var Person3 = new Person();
@@ -387,7 +387,7 @@ namespace Core.DomainServices.Test
             GameNight.AdultsOnly = true;
             GameNight.DateTime = new DateTime(2023, 10, 09);
             GameNight.MaxPlayers = 4;
-            GameNight.NutAllergy = false;
+            GameNight.NutAllergy = true;
 
             var Person2 = new Person();
             var Person3 = new Person();

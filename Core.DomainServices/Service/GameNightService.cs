@@ -53,22 +53,22 @@ namespace Core.DomainServices.Service
                 throw new DomainException("This gamenight is full");
             }
 
-            if (person.AlcoholFree && gameNight.AlcoholFree)
+            if (person.AlcoholFree && !gameNight.AlcoholFree)
             {
                 warnings.Add("This gamenight will have alcohol");
             }
 
-            if (person.NutAllergy && gameNight.NutAllergy)
+            if (person.NutAllergy && !gameNight.NutAllergy)
             {
                 warnings.Add("This gamenight contains nuts");
             }
 
-            if (person.Vegan && gameNight.Vegan)
+            if (person.Vegan && !gameNight.Vegan)
             {
                 warnings.Add("This gamenight will not be vegan");
             }
 
-            if (person.LactoseIntolerant && gameNight.LactoseIntolerant)
+            if (person.LactoseIntolerant && !gameNight.LactoseIntolerant)
             {
                 warnings.Add("This gamenight will have lactose");
             }

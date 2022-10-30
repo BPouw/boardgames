@@ -148,19 +148,19 @@
                             <h6 class="mb-0 ">Diet</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            @if (@Model.Vegan)
+                            @if (!@Model.Vegan)
                             {
                                 <i class="fa-solid fa-meat"></i>
                             }
-                            @if (@Model.LactoseIntolerant)
+                            @if (!@Model.LactoseIntolerant)
                             {
                                 <i class="fa-solid fa-cow"></i>
                             }
-                            @if (@Model.AlcoholFree)
+                            @if (!@Model.AlcoholFree)
                             {
                                 <i class="fa-solid fa-martini-glass-citrus"></i>
                             }
-                            @if (@Model.NutAllergy)
+                            @if (!@Model.NutAllergy)
                             {
                                 <i class="fa-regular fa-peanuts"></i>
                             }
